@@ -611,7 +611,10 @@ function login(){
   const errTxt=document.getElementById('error-text');
   if(!u||!p){errTxt.textContent=' Please enter both username and password.';err.classList.remove('hidden');return;}
   if(VALID_USERS[u]&&VALID_USERS[u]===p){
-    currentUser=u;err.classList.add('hidden');enterShop();
+    currentUser=u;
+    sessionStorage.setItem('qk_current_user',currentUser);
+    err.classList.add('hidden');
+    enterShop();
   } else {errTxt.textContent=' Your username or password is incorrect.';err.classList.remove('hidden');}
 }
 function enterShop(){
@@ -633,6 +636,7 @@ function logout(){
   if(isProblem()){persistedCart=[...cart];persistedBadge=buggyBadge;}
   else{persistedCart=[];persistedBadge=0;}
   currentUser=null;cart=[];buggyBadge=0;
+  sessionStorage.removeItem('qk_current_user');
   document.getElementById('username').value='';
   document.getElementById('password').value='';
   document.getElementById('login-page').classList.remove('hidden');
@@ -642,6 +646,14 @@ function logout(){
   closeCart();
 }
 function isProblem(){return currentUser==='problem_user';}
+
+function restoreSession(){
+  const saved=sessionStorage.getItem('qk_current_user');
+  if(saved&&VALID_USERS[saved]){
+    currentUser=saved;
+    enterShop();
+  }
+}
 
 // VIEW MANAGEMENT
 function showView(name){
@@ -1306,4 +1318,5 @@ document.getElementById('username').addEventListener('keyup',e=>{if(e.key==='Ent
 document.getElementById('search-input').addEventListener('keyup',e=>{if(e.key==='Enter')applyFilters();});
 document.getElementById('g-email').addEventListener('keyup',e=>{if(e.key==='Enter')googleEmailNext();});
 document.getElementById('g-password').addEventListener('keyup',e=>{if(e.key==='Enter')googlePasswordNext();});
+restoreSession();
 </script>
