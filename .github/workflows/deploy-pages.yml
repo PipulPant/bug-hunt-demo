@@ -31,7 +31,11 @@ jobs:
         run: |
           mkdir -p _site
           cp qualitykart-qa-practice.html _site/index.html
-          cp qualitykart-readme.md _site/README.md
+          if [ -f README.md ]; then
+            cp README.md _site/README.md
+          elif [ -f qualitykart-readme.md ]; then
+            cp qualitykart-readme.md _site/README.md
+          fi
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
