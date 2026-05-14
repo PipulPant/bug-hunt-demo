@@ -1,0 +1,1216 @@
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:"Amazon Ember",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;background:#EAEDED;color:#0F1111;min-height:100vh;font-size:14px}
+  a{color:#007185;text-decoration:none;cursor:pointer}a:hover{color:#C7511F;text-decoration:underline}
+  button{font-family:inherit}
+
+  /* LOGIN */
+  .login-page{min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:30px 20px;background:#fff}
+  .login-logo{font-size:32px;font-weight:800;color:#0F1111;letter-spacing:-1px;margin-bottom:18px}
+  .login-logo .accent{color:#FF9900}
+  .login-box{border:1px solid #ddd;border-radius:8px;padding:22px 26px;width:100%;max-width:360px}
+  .login-box h1{font-size:28px;font-weight:500;margin-bottom:16px}
+  .error-msg{background:#FFF0F0;border:1px solid #D6262A;border-left:4px solid #D6262A;padding:10px 12px;border-radius:4px;margin-bottom:14px;font-size:13px}
+  .error-msg strong{display:block;color:#C40000;margin-bottom:2px}
+  .form-group{margin-bottom:14px}
+  .form-group label{display:block;font-size:13px;font-weight:700;margin-bottom:4px}
+  .form-group input{width:100%;padding:8px 10px;border:1px solid #888C8C;border-radius:4px;font-size:14px;outline:none}
+  .form-group input:focus{border-color:#E77600;box-shadow:0 0 3px 2px rgba(228,121,17,.5)}
+  .yellow-btn{padding:8px 14px;background:linear-gradient(to bottom,#f7dfa5,#f0c14b);color:#0F1111;border:1px solid #a88734;border-radius:4px;font-size:13px;cursor:pointer}
+  .yellow-btn:hover{background:linear-gradient(to bottom,#f5d78e,#eeb933)}
+  .orange-btn{padding:8px 14px;background:linear-gradient(to bottom,#ffd699,#ff9900);color:#0F1111;border:1px solid #cc8400;border-radius:4px;font-size:13px;cursor:pointer}
+  .orange-btn:hover{background:linear-gradient(to bottom,#ffc266,#e68a00)}
+  .login-btn{width:100%}
+  .login-fineprint{font-size:12px;margin-top:14px;line-height:1.5}
+  .creds-box{width:100%;max-width:360px;background:#F0F2F2;border:1px solid #D5D9D9;padding:14px;margin-top:18px;border-radius:8px;font-size:12px}
+  .creds-box h4{font-size:13px;margin-bottom:8px;font-weight:700}
+  .creds-box code{background:white;padding:2px 6px;border-radius:3px;font-family:"SF Mono",Monaco,Consolas,monospace;color:#C7511F;border:1px solid #ddd}
+  .creds-row{margin-bottom:6px;line-height:1.6}
+  .social-divider{display:flex;align-items:center;gap:10px;margin:18px 0 14px;color:#565959;font-size:12px}
+  .social-divider::before,.social-divider::after{content:'';flex:1;height:1px;background:#ddd}
+  .social-btn{width:100%;display:flex;align-items:center;justify-content:center;gap:12px;padding:10px;border:1px solid #dadce0;border-radius:4px;background:white;cursor:pointer;font-size:14px;font-weight:500;color:#3c4043;margin-bottom:8px}
+  .social-btn:hover{background:#f8f9fa;box-shadow:0 1px 3px rgba(60,64,67,.15)}
+  .social-btn svg{width:18px;height:18px;flex-shrink:0}
+  .social-btn.apple{background:#000;color:#fff;border-color:#000}
+  .social-btn.apple:hover{background:#1a1a1a}
+
+  /* HEADER */
+  .header-top{background:#131921;color:white;padding:6px 16px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .logo-link,.deliver-to,.header-link,.cart-link{padding:8px 10px;border:1px solid transparent;border-radius:2px;cursor:pointer}
+  .logo-link:hover,.deliver-to:hover,.header-link:hover,.cart-link:hover{border-color:white}
+  .logo-link{display:flex;align-items:center}
+  .logo-link .brand{font-size:22px;font-weight:800;color:white;letter-spacing:-.5px}
+  .logo-link .brand .a{color:#FF9900}
+  .deliver-to{display:flex;flex-direction:column;min-width:130px}
+  .deliver-to .l1{font-size:12px;color:#CCC}
+  .deliver-to .l2{font-size:14px;font-weight:700;color:white}
+  .search-bar{flex:1;display:flex;height:40px;min-width:0;border-radius:4px;overflow:hidden}
+  .search-bar:focus-within{box-shadow:0 0 0 3px #FF9900}
+  .search-cat{background:#F3F3F3;color:#0F1111;border:none;padding:0 8px;font-size:12px;border-right:1px solid #CDCDCD;cursor:pointer;outline:none}
+  .search-bar input{flex:1;border:none;padding:0 12px;font-size:15px;outline:none;min-width:0}
+  .search-bar button{width:45px;background:#FEBD69;border:none;cursor:pointer;font-size:18px;color:#0F1111}
+  .search-bar button:hover{background:#F3A847}
+  .header-link{display:flex;flex-direction:column;white-space:nowrap}
+  .header-link .l1{font-size:12px;color:#CCC}
+  .header-link .l2{font-size:14px;font-weight:700;color:white}
+  .cart-link{display:flex;align-items:flex-end;gap:4px;position:relative}
+  .cart-link .cart-count{position:absolute;top:2px;left:19px;color:#F08804;font-weight:700;font-size:16px}
+  .cart-link .cart-icon{font-size:28px;padding-top:8px}
+  .cart-link .cart-text{font-size:14px;font-weight:700;color:white;padding-bottom:2px}
+
+  /* SUBNAV */
+  .subnav{background:#232F3E;color:white;padding:0 8px;display:flex;align-items:center;height:39px;gap:4px;overflow-x:auto}
+  .subnav-item{padding:8px 10px;font-size:14px;cursor:pointer;border:1px solid transparent;border-radius:2px;white-space:nowrap;user-select:none}
+  .subnav-item:hover{border-color:white}
+  .subnav-item.active{border-color:white;background:rgba(255,255,255,.1)}
+  .subnav-item.bold{font-weight:700}
+
+  /* HERO + BREADCRUMB */
+  .hero-strip{background:linear-gradient(90deg,#0F1111 0%,#232F3E 100%);color:white;padding:14px 24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
+  .hero-strip strong{color:#FFD814}
+  .hero-strip .right{font-size:12px;color:#CCC}
+  .breadcrumb{padding:10px 24px;font-size:13px;color:#565959}
+  .breadcrumb .sep{margin:0 6px;color:#888}
+
+  /* LISTING */
+  .layout{display:grid;grid-template-columns:230px 1fr;max-width:1500px;margin:0 auto;padding:0 16px 30px}
+  @media(max-width:800px){.layout{grid-template-columns:1fr}.sidebar{display:none}}
+  .sidebar{padding:16px 14px 16px 0}
+  .sidebar-section{margin-bottom:22px}
+  .sidebar-section h3{font-size:15px;font-weight:700;margin-bottom:8px}
+  .sidebar-section .opt{display:block;padding:4px 0;font-size:13px;color:#007185;cursor:pointer}
+  .sidebar-section .opt:hover{color:#C7511F;text-decoration:underline}
+  .sidebar-section .opt.active{color:#C7511F;font-weight:700}
+  .sidebar-section .stars{color:#FFA41C;font-size:14px}
+  .sidebar-section .opt.review{display:flex;align-items:center;gap:4px}
+  .sidebar-section .opt.review .count{color:#565959;font-size:12px}
+  .listing-banner{margin-bottom:14px;border-radius:8px;overflow:hidden}
+  .results-header{background:white;padding:14px 18px;margin:12px 0;border-radius:8px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;box-shadow:0 1px 2px rgba(15,17,17,.08)}
+  .results-header h2{font-size:17px;font-weight:700}
+  .results-count{font-size:13px;color:#565959;margin-top:2px}
+  .sort-control{display:flex;align-items:center;gap:8px}
+  .sort-control label{font-size:13px;color:#565959}
+  .sort-control select{padding:6px 10px;border:1px solid #888C8C;border-radius:4px;font-size:13px;cursor:pointer;outline:none;background:#F0F2F2}
+  .product-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}
+  .product-card{background:white;border-radius:8px;padding:14px;box-shadow:0 1px 3px rgba(15,17,17,.1);display:flex;flex-direction:column;transition:box-shadow .15s;position:relative;overflow:hidden;cursor:pointer}
+  .product-card:hover{box-shadow:0 2px 10px rgba(15,17,17,.18)}
+  .product-card:hover .product-name{color:#C7511F}
+  .product-image{background:white;height:170px;display:flex;align-items:center;justify-content:center;font-size:88px;margin-bottom:10px}
+  .badge-row{position:absolute;top:8px;left:8px;right:8px;display:flex;justify-content:space-between;pointer-events:none;z-index:2}
+  .badge{font-size:10px;font-weight:700;padding:3px 8px;border-radius:2px;text-transform:uppercase;letter-spacing:.3px}
+  .badge.bestseller{background:#C45500;color:white}
+  .badge.oos{background:#d32f2f;color:white}
+  .badge.discount{background:#067D62;color:white}
+  .badge.rank{background:#232F3E;color:#FFD814;font-size:11px;padding:4px 8px}
+  .badge.new-tag{background:#007185;color:white}
+  .product-brand{font-size:11px;color:#565959;text-transform:uppercase;letter-spacing:.4px;margin-bottom:3px;font-weight:600}
+  .product-name{font-size:14px;line-height:1.3;margin-bottom:6px;min-height:36px}
+  .product-rating-row{display:flex;align-items:center;gap:6px;margin-bottom:4px;font-size:12px}
+  .product-rating-row .stars{color:#FFA41C;font-size:14px;letter-spacing:-1px}
+  .product-rating-row .reviews{color:#007185}
+  .product-price-row{display:flex;align-items:baseline;gap:6px;margin-bottom:4px;flex-wrap:wrap}
+  .product-price{font-size:21px;font-weight:500}
+  .product-price .sup{font-size:11px;vertical-align:top;position:relative;top:2px}
+  .strike-price{text-decoration:line-through;color:#565959;font-size:13px}
+  .product-meta{font-size:12px;margin-bottom:4px}
+  .free-ship{font-size:12px;margin-bottom:8px}
+  .stock-status{font-size:13px;margin-bottom:8px;font-weight:600}
+  .stock-status.in{color:#067D62}
+  .stock-status.low{color:#C7511F}
+  .add-to-cart-btn{padding:7px;background:linear-gradient(to bottom,#f7dfa5,#f0c14b);color:#0F1111;border:1px solid #a88734;border-radius:100px;cursor:pointer;font-weight:500;font-size:13px}
+  .add-to-cart-btn:hover{background:linear-gradient(to bottom,#f5d78e,#eeb933)}
+  .add-to-cart-btn.added{background:linear-gradient(to bottom,#b8e986,#4caf50);border-color:#2e7d32}
+  .css-broken .add-to-cart-btn{margin-top:-4px;transform:translateX(28px);width:60%;padding-left:30px}
+
+  /* DETAIL */
+  .detail-back{max-width:1500px;margin:0 auto;padding:8px 24px 0}
+  .detail-layout{display:grid;grid-template-columns:1fr 1.4fr 300px;gap:24px;max-width:1500px;margin:0 auto;padding:16px 24px 30px;background:white}
+  @media(max-width:1100px){.detail-layout{grid-template-columns:1fr 1fr}.buy-box{grid-column:1/-1;max-width:400px}}
+  @media(max-width:700px){.detail-layout{grid-template-columns:1fr}}
+  .detail-img{background:white;border:1px solid #eee;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:200px;min-height:360px}
+  .detail-info h1{font-size:24px;font-weight:500;line-height:1.3;margin-bottom:8px}
+  .detail-brand{color:#007185;font-size:14px;margin-bottom:4px}
+  .detail-rating-row{display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid #ddd;margin-bottom:14px;font-size:14px}
+  .detail-rating-row .stars{color:#FFA41C;font-size:18px;letter-spacing:-1px}
+  .detail-price-block{margin-bottom:14px}
+  .detail-price-block .price{font-size:28px;font-weight:400}
+  .detail-price-block .price .sup{font-size:14px;vertical-align:top;position:relative;top:4px}
+  .detail-price-block .strike{color:#565959;text-decoration:line-through;font-size:14px;margin-left:6px}
+  .detail-price-block .save{color:#B12704;font-size:14px;font-weight:500;margin-left:6px}
+  .detail-about h3{font-size:16px;font-weight:700;margin:14px 0 8px}
+  .detail-about ul{margin-left:20px}
+  .detail-about li{font-size:13px;padding:3px 0;line-height:1.5}
+  .detail-desc{margin-top:12px;font-size:14px;line-height:1.5}
+  .buy-box{border:1px solid #D5D9D9;border-radius:8px;padding:16px;height:fit-content;position:sticky;top:12px}
+  .buy-box .bb-price{font-size:24px;font-weight:400;margin-bottom:8px}
+  .buy-box .bb-price .sup{font-size:13px;vertical-align:top;position:relative;top:3px}
+  .buy-box .bb-ship{font-size:13px;margin-bottom:8px}
+  .buy-box .bb-stock{font-size:17px;color:#067D62;font-weight:500;margin-bottom:12px}
+  .buy-box .bb-stock.oos{color:#d32f2f}
+  .qty-row{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+  .qty-row label{font-size:13px}
+  .qty-row select{padding:4px 8px;border:1px solid #888;border-radius:4px;background:#F0F2F2;font-size:13px;cursor:pointer}
+  .buy-box .yellow-btn,.buy-box .orange-btn{width:100%;padding:9px;margin-bottom:8px;border-radius:100px}
+  .specs-section,.reviews-section,.related-section{max-width:1500px;margin:16px auto;padding:20px 24px;background:white}
+  .specs-section h2,.reviews-section h2,.related-section h2{font-size:18px;font-weight:700;padding-bottom:8px;border-bottom:1px solid #ddd;margin-bottom:14px}
+  .specs-table{width:100%;font-size:13px}
+  .specs-table tr{border-bottom:1px solid #f0f0f0}
+  .specs-table td{padding:8px 4px}
+  .specs-table td:first-child{font-weight:700;width:40%;max-width:200px;color:#565959}
+  .review-item{padding:12px 0;border-bottom:1px solid #f0f0f0}
+  .review-item:last-child{border-bottom:none}
+  .review-item .r-author{font-weight:700;font-size:13px}
+  .review-item .r-stars{color:#FFA41C;font-size:14px;margin:4px 0}
+  .review-item .r-title{font-weight:700;font-size:14px;margin-bottom:4px}
+  .review-item .r-body{font-size:13px;line-height:1.5}
+  .review-item .r-date{font-size:12px;color:#565959;margin-top:4px}
+
+  /* CHECKOUT */
+  .checkout-page{max-width:1300px;margin:0 auto;padding:20px 24px}
+  .checkout-page h1{font-size:28px;font-weight:400;padding-bottom:12px;border-bottom:1px solid #ddd;margin-bottom:20px}
+  .checkout-layout{display:grid;grid-template-columns:1fr 320px;gap:20px}
+  @media(max-width:800px){.checkout-layout{grid-template-columns:1fr}}
+  .co-section{background:white;border:1px solid #D5D9D9;border-radius:8px;padding:18px 20px;margin-bottom:14px}
+  .co-section h3{font-size:16px;font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+  .co-section .step-num{background:#232F3E;color:white;width:24px;height:24px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:13px}
+  .form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+  @media(max-width:600px){.form-row{grid-template-columns:1fr}}
+  .form-row.full{grid-template-columns:1fr}
+  .form-row label{display:block;font-size:12px;font-weight:700;margin-bottom:4px;color:#565959}
+  .form-row input,.form-row select,.form-row textarea{width:100%;padding:7px 10px;border:1px solid #888C8C;border-radius:4px;font-size:13px;outline:none;font-family:inherit}
+  .form-row input:focus,.form-row select:focus,.form-row textarea:focus{border-color:#E77600}
+  .co-item{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid #f0f0f0;align-items:center}
+  .co-item:last-child{border-bottom:none}
+  .co-item-img{width:60px;height:60px;background:#F0F2F2;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:32px;flex-shrink:0}
+  .co-item-name{font-size:13px;font-weight:500}
+  .co-item-price{font-size:14px;color:#B12704;font-weight:700}
+  .order-summary{background:white;border:1px solid #D5D9D9;border-radius:8px;padding:18px 20px;position:sticky;top:12px;height:fit-content}
+  .order-summary h3{font-size:17px;font-weight:700;margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid #eee}
+  .s-row{display:flex;justify-content:space-between;padding:6px 0;font-size:13px}
+  .s-row.total{font-size:18px;font-weight:700;color:#B12704;padding:12px 0 8px;border-top:1px solid #ddd;margin-top:8px}
+  .place-order-btn{width:100%;padding:11px;background:linear-gradient(to bottom,#f7dfa5,#f0c14b);color:#0F1111;border:1px solid #a88734;border-radius:100px;cursor:pointer;font-weight:700;font-size:14px;margin-top:14px}
+  .place-order-btn:hover{background:linear-gradient(to bottom,#f5d78e,#eeb933)}
+  .order-disc{font-size:11px;color:#565959;margin-top:10px;line-height:1.4}
+
+  /* CONFIRMATION */
+  .confirm-page{max-width:900px;margin:30px auto;padding:0 20px}
+  .confirm-banner{background:white;border:1px solid #067D62;border-radius:8px;padding:24px;margin-bottom:18px;display:flex;gap:18px;align-items:flex-start}
+  .confirm-check{width:56px;height:56px;background:#067D62;color:white;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:32px;flex-shrink:0}
+  .confirm-text h1{font-size:24px;color:#067D62;font-weight:500;margin-bottom:6px}
+  .confirm-text p{font-size:14px;margin-bottom:4px}
+  .confirm-section{background:white;border:1px solid #D5D9D9;border-radius:8px;padding:18px 22px;margin-bottom:14px}
+  .confirm-section h3{font-size:16px;font-weight:700;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid #eee}
+  .confirm-section .c-row{display:flex;justify-content:space-between;padding:4px 0;font-size:13px}
+  .continue-btn{display:block;margin:20px auto;padding:10px 30px;background:linear-gradient(to bottom,#f7dfa5,#f0c14b);color:#0F1111;border:1px solid #a88734;border-radius:100px;cursor:pointer;font-weight:500;font-size:14px}
+
+  /* CONTENT PAGES */
+  .content-page{max-width:1200px;margin:0 auto;padding:0 24px 40px}
+  .page-hero{background:linear-gradient(135deg,#232F3E,#131921);color:white;padding:48px 24px;text-align:center;margin-bottom:28px}
+  .page-hero h1{font-size:36px;font-weight:700;margin-bottom:8px}
+  .page-hero p{font-size:16px;color:#CCC;max-width:600px;margin:0 auto 16px}
+  .page-hero input{padding:10px 16px;border:none;border-radius:4px 0 0 4px;font-size:14px;width:300px;max-width:60vw;outline:none}
+  .page-hero .hero-btn{padding:10px 18px;background:#FF9900;color:white;border:none;border-radius:0 4px 4px 0;cursor:pointer;font-size:14px;font-weight:600}
+  /* Customer Service */
+  .cs-topics{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:14px;margin-bottom:32px}
+  .cs-topic{background:white;border:1px solid #ddd;border-radius:8px;padding:20px 14px;text-align:center;cursor:pointer;transition:box-shadow .15s,border-color .15s}
+  .cs-topic:hover{box-shadow:0 2px 8px rgba(0,0,0,.1);border-color:#999}
+  .cs-topic .t-icon{font-size:32px;margin-bottom:8px}
+  .cs-topic .t-label{font-size:13px;font-weight:600}
+  .faq-section{background:white;border:1px solid #D5D9D9;border-radius:8px;margin-bottom:28px;overflow:hidden}
+  .faq-item{border-bottom:1px solid #f0f0f0}
+  .faq-item:last-child{border-bottom:none}
+  .faq-q{padding:16px 20px;font-size:14px;font-weight:600;cursor:pointer;display:flex;justify-content:space-between;align-items:center;user-select:none}
+  .faq-q:hover{background:#f8f9fa}
+  .faq-toggle{font-size:20px;color:#565959;font-weight:300;transition:transform .2s}
+  .faq-a{padding:0 20px;max-height:0;overflow:hidden;transition:max-height .3s ease,padding .3s;font-size:13px;color:#565959;line-height:1.6}
+  .faq-a.open{max-height:200px;padding:0 20px 16px}
+  .faq-toggle.open{transform:rotate(45deg)}
+  .contact-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:24px}
+  @media(max-width:600px){.contact-grid{grid-template-columns:1fr}}
+  .contact-method{background:white;border:1px solid #ddd;border-radius:8px;padding:20px;text-align:center}
+  .contact-method .cm-icon{font-size:28px;margin-bottom:8px}
+  .contact-method .cm-name{font-weight:700;font-size:14px;margin-bottom:4px}
+  .contact-method .cm-detail{font-size:12px;color:#565959;line-height:1.5}
+  .contact-form-box{background:white;border:1px solid #D5D9D9;border-radius:8px;padding:20px}
+  /* Registry */
+  .registry-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:32px}
+  @media(max-width:700px){.registry-grid{grid-template-columns:1fr}}
+  .reg-card{background:white;border:1px solid #D5D9D9;border-radius:8px;padding:24px}
+  .reg-card h3{font-size:18px;font-weight:700;margin-bottom:8px}
+  .reg-card p{font-size:13px;color:#565959;margin-bottom:16px}
+  .occasion-chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+  .occ-chip{padding:6px 14px;border:1px solid #007185;border-radius:100px;color:#007185;font-size:12px;cursor:pointer}
+  .occ-chip.active{background:#007185;color:white}
+  .occ-chip:hover:not(.active){background:#f0f7f8}
+  /* Gift Cards */
+  .gc-layout{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:start}
+  @media(max-width:700px){.gc-layout{grid-template-columns:1fr}}
+  .gc-amounts{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:20px}
+  .gc-amt{padding:10px 20px;border:2px solid #ddd;border-radius:4px;background:white;cursor:pointer;font-size:16px;font-weight:500}
+  .gc-amt.active{border-color:#C7511F;background:#FFF5EE;color:#C7511F}
+  .gc-amt:hover:not(.active){border-color:#999}
+  .gc-card{background:linear-gradient(135deg,#232F3E,#FF9900);color:white;border-radius:12px;padding:28px 24px;min-height:180px;display:flex;flex-direction:column;justify-content:space-between;box-shadow:0 4px 16px rgba(0,0,0,.2);margin-bottom:20px}
+  .gc-card .gc-brand{font-size:20px;font-weight:800}
+  .gc-card .gc-amount{font-size:52px;font-weight:700}
+  .gc-card .gc-sub{font-size:11px;color:rgba(255,255,255,.8)}
+  .gc-right-box{background:white;border:1px solid #D5D9D9;border-radius:8px;padding:20px}
+  .gc-right-box h3{font-size:16px;font-weight:700;margin-bottom:14px}
+  /* Sell */
+  .sell-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:32px}
+  @media(max-width:600px){.sell-stats{grid-template-columns:1fr}}
+  .stat-card{background:white;border:1px solid #ddd;border-radius:8px;padding:20px;text-align:center}
+  .stat-card .s-num{font-size:32px;font-weight:700;color:#C7511F}
+  .stat-card .s-label{font-size:13px;color:#565959}
+  .steps-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:32px}
+  @media(max-width:700px){.steps-grid{grid-template-columns:1fr 1fr}}
+  @media(max-width:400px){.steps-grid{grid-template-columns:1fr}}
+  .step-card{background:white;border:1px solid #ddd;border-radius:8px;padding:20px;text-align:center}
+  .step-card .s-step{width:36px;height:36px;background:#FF9900;color:white;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;margin:0 auto 10px}
+  .step-card .s-title{font-weight:700;font-size:14px;margin-bottom:4px}
+  .step-card .s-desc{font-size:12px;color:#565959}
+  .sell-form-box{background:white;border:1px solid #D5D9D9;border-radius:8px;padding:24px;max-width:600px;margin:0 auto}
+  .sell-form-box h3{font-size:18px;font-weight:700;margin-bottom:16px;text-align:center}
+  /* Books */
+  .book-cats{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px}
+  .book-cat{padding:8px 18px;border:1px solid #ddd;border-radius:100px;cursor:pointer;font-size:13px;background:white}
+  .book-cat.active{background:#0F1111;color:white;border-color:#0F1111}
+  .book-cat:hover:not(.active){background:#f0f0f0}
+  .books-empty-state{background:white;border:1px solid #ddd;border-radius:8px;padding:60px 20px;text-align:center}
+  .books-empty-state .be-icon{font-size:64px;margin-bottom:16px}
+  .books-empty-state h3{font-size:20px;margin-bottom:8px}
+  .books-empty-state p{color:#565959;margin-bottom:20px;font-size:14px}
+  .notify-row{display:flex;justify-content:center;gap:0;max-width:360px;margin:0 auto}
+  .notify-row input{flex:1;padding:9px 12px;border:1px solid #888;border-radius:4px 0 0 4px;font-size:13px;outline:none}
+  .notify-row input:focus{border-color:#E77600}
+  .notify-row button{padding:9px 16px;background:#FF9900;color:white;border:none;border-radius:0 4px 4px 0;cursor:pointer;font-size:13px;white-space:nowrap}
+
+  /* CART DRAWER */
+  .cart-overlay{position:fixed;inset:0;background:rgba(0,0,0,.4);display:none;z-index:1000}
+  .cart-overlay.open{display:block}
+  .cart-drawer{position:fixed;right:0;top:0;bottom:0;width:100%;max-width:440px;background:white;box-shadow:-4px 0 20px rgba(0,0,0,.15);display:flex;flex-direction:column;transform:translateX(100%);transition:transform .25s;z-index:1001}
+  .cart-drawer.open{transform:translateX(0)}
+  .cart-header{padding:16px 20px;border-bottom:1px solid #ddd;display:flex;justify-content:space-between;align-items:center}
+  .cart-header h2{font-size:20px;font-weight:500}
+  .cart-close{background:none;border:none;font-size:28px;cursor:pointer;color:#565959;line-height:1;padding:0 4px}
+  .cart-close:hover{color:#C7511F}
+  .cart-items{flex:1;overflow-y:auto;padding:8px 20px}
+  .cart-item{display:flex;gap:12px;padding:14px 0;border-bottom:1px solid #f0f0f0;align-items:flex-start}
+  .cart-item:last-child{border-bottom:none}
+  .ci-img{width:60px;height:60px;background:#F0F2F2;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:32px;flex-shrink:0}
+  .ci-info{flex:1;min-width:0}
+  .ci-name{font-size:14px;font-weight:500;line-height:1.3;margin-bottom:4px}
+  .ci-price{font-size:15px;font-weight:700}
+  .remove-btn{background:none;color:#007185;border:none;padding:4px 0;cursor:pointer;font-size:12px;margin-top:4px}
+  .remove-btn:hover{color:#C7511F;text-decoration:underline}
+  .cart-empty{text-align:center;color:#565959;padding:40px 20px}
+  .cart-empty h3{font-size:18px;color:#C7511F;margin-bottom:8px}
+  .cart-footer{padding:16px 20px;border-top:1px solid #ddd;background:#F7F8F8}
+  .cart-subtotal{font-size:16px;margin-bottom:12px}
+  .checkout-btn{width:100%;padding:10px;background:linear-gradient(to bottom,#f7dfa5,#f0c14b);color:#0F1111;border:1px solid #a88734;border-radius:100px;font-weight:500;font-size:14px;cursor:pointer}
+  .checkout-btn:hover{background:linear-gradient(to bottom,#f5d78e,#eeb933)}
+
+  /* FOOTER */
+  .footer-back{background:#37475A;color:white;text-align:center;padding:14px;cursor:pointer;font-size:13px;margin-top:30px}
+  .footer-back:hover{background:#485769}
+  .footer-main{background:#232F3E;color:white;padding:36px 24px 24px}
+  .footer-cols{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:28px}
+  .footer-col h4{font-size:14px;font-weight:700;margin-bottom:10px}
+  .footer-col a{display:block;color:#DDD;font-size:12px;margin-bottom:6px}
+  .footer-col a:hover{text-decoration:underline;color:#fff}
+  .footer-bottom{background:#131A22;color:#DDD;text-align:center;padding:18px;font-size:12px}
+  .footer-bottom .brand{color:#fff;font-weight:700;font-size:16px;margin-bottom:6px;display:block}
+
+  /* TOAST */
+  .toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:#232F3E;color:white;padding:12px 24px;border-radius:6px;font-size:14px;z-index:9999;box-shadow:0 4px 16px rgba(0,0,0,.3);pointer-events:none;opacity:0;transition:opacity .3s}
+  .toast.show{opacity:1}
+
+  /* BUG PANEL */
+  .toggle-bugs-btn{position:fixed;bottom:20px;right:20px;background:#B12704;color:white;border:none;padding:11px 18px;border-radius:24px;cursor:pointer;font-weight:700;font-size:13px;box-shadow:0 4px 14px rgba(0,0,0,.3);z-index:998}
+  .toggle-bugs-btn:hover{background:#8B1D02}
+  .bug-panel{position:fixed;bottom:20px;right:20px;background:white;border-radius:10px;box-shadow:0 6px 30px rgba(0,0,0,.3);width:420px;max-width:calc(100vw - 40px);max-height:75vh;display:none;flex-direction:column;z-index:999}
+  .bug-panel.open{display:flex}
+  .bug-panel-header{padding:14px 18px;background:#232F3E;color:white;border-radius:10px 10px 0 0;display:flex;justify-content:space-between;align-items:center}
+  .bug-panel-header h3{font-size:14px;font-weight:700}
+  .bug-panel-content{overflow-y:auto;padding:8px 18px 14px}
+  .bug-item{padding:11px 0;border-bottom:1px solid #f0f0f0;font-size:13px}
+  .bug-item:last-child{border-bottom:none}
+  .bug-cat{display:inline-block;font-size:9px;font-weight:700;padding:2px 6px;border-radius:3px;margin-left:6px;letter-spacing:.5px}
+  .bug-cat.ui{background:#E3F2FD;color:#1976D2}
+  .bug-cat.func{background:#FFEBEE;color:#D32F2F}
+  .bug-desc{margin-top:4px;color:#565959;line-height:1.45}
+
+  /* GOOGLE MODAL */
+  .google-overlay{position:fixed;inset:0;background:rgba(32,33,36,.6);display:none;align-items:center;justify-content:center;z-index:2000;padding:20px}
+  .google-overlay.open{display:flex}
+  .google-modal{background:white;border-radius:8px;width:100%;max-width:450px;padding:44px 40px 32px;font-family:"Roboto",Arial,sans-serif;position:relative;box-shadow:0 24px 60px rgba(0,0,0,.3)}
+  .google-close-x{position:absolute;top:12px;right:12px;background:none;border:none;font-size:22px;cursor:pointer;color:#5f6368;width:36px;height:36px;border-radius:50%}
+  .google-close-x:hover{background:#f1f3f4}
+  .g-logo-big{width:75px;height:24px;display:block;margin-bottom:16px}
+  .g-step h1{font-size:24px;font-weight:400;color:#202124;margin-bottom:8px}
+  .g-step .g-sub{font-size:16px;color:#202124;margin-bottom:30px}
+  .g-input-wrap{position:relative;margin-bottom:4px}
+  .g-input-wrap input{width:100%;padding:13px 15px;border:1px solid #dadce0;border-radius:4px;font-size:16px;outline:none;font-family:inherit;color:#202124;background:white}
+  .g-input-wrap input:focus{border:2px solid #1a73e8;padding:12px 14px}
+  .g-input-wrap input.has-error{border:2px solid #d93025;padding:12px 14px}
+  .g-input-wrap label{position:absolute;top:14px;left:12px;background:white;padding:0 4px;color:#5f6368;font-size:16px;pointer-events:none;transition:all .15s}
+  .g-input-wrap input:focus+label,.g-input-wrap input:not(:placeholder-shown)+label{top:-8px;font-size:12px;color:#1a73e8}
+  .g-input-wrap input.has-error+label{color:#d93025!important}
+  .g-inline-error{color:#d93025;font-size:12px;margin-top:6px}
+  .g-forgot,.g-create{color:#1a73e8;font-size:14px;font-weight:500;padding:6px 8px;border-radius:4px;cursor:pointer;display:inline-block}
+  .g-forgot:hover,.g-create:hover{background:#e8f0fe}
+  .g-forgot{margin-top:8px;margin-left:-8px}
+  .g-fine{font-size:14px;color:#202124;margin-top:26px;line-height:1.5}
+  .g-fine a{color:#1a73e8;font-weight:500;cursor:pointer}
+  .g-actions{display:flex;justify-content:space-between;align-items:center;margin-top:34px}
+  .g-btn{background:#1a73e8;color:white;border:none;padding:10px 24px;border-radius:4px;font-size:14px;font-weight:500;cursor:pointer;font-family:inherit;min-width:88px;display:inline-flex;align-items:center;justify-content:center;gap:6px}
+  .g-btn:hover{background:#1765cc}
+  .g-btn:disabled{background:#e8eaed;color:#5f6368;cursor:not-allowed}
+  .g-user-chip{display:inline-flex;align-items:center;gap:8px;padding:4px 14px 4px 4px;border:1px solid #dadce0;border-radius:18px;margin-bottom:24px;font-size:14px;cursor:pointer}
+  .g-user-chip:hover{background:#f8f9fa}
+  .g-avatar{width:26px;height:26px;background:#1a73e8;color:white;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:500}
+  .g-error-box{background:#fce8e6;color:#c5221f;padding:12px 14px;border-radius:4px;font-size:13px;margin-bottom:16px;display:flex;gap:10px;align-items:flex-start;line-height:1.4}
+  .g-checkbox{display:flex;align-items:center;gap:8px;margin-top:16px;font-size:14px;cursor:pointer}
+  .g-spinner{display:inline-block;width:14px;height:14px;border:2px solid currentColor;border-top-color:transparent;border-radius:50%;animation:g-spin .7s linear infinite}
+  @keyframes g-spin{to{transform:rotate(360deg)}}
+
+  .hidden{display:none!important}
+</style>
+
+<div id="app">
+  <!-- LOGIN -->
+  <div id="login-page" class="login-page">
+    <span class="login-logo">Quality<span class="accent">Kart</span></span>
+    <div class="login-box">
+      <h1>Sign in</h1>
+      <div id="error-msg" class="error-msg hidden"><strong>There was a problem</strong><span id="error-text"></span></div>
+      <div class="form-group"><label>Username</label><input type="text" id="username" autocomplete="off"/></div>
+      <div class="form-group"><label>Password</label><input type="password" id="password"/></div>
+      <button class="yellow-btn login-btn" onclick="login()">Continue</button>
+      <div class="social-divider">or</div>
+      <button class="social-btn" onclick="openGoogleSignIn()">
+        <svg viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+        Sign in with Google
+      </button>
+      <button class="social-btn apple" onclick="openGoogleSignIn()">
+        <svg viewBox="0 0 24 24" fill="#fff"><path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/></svg>
+        Sign in with Apple
+      </button>
+      <div class="login-fineprint">By continuing, you agree to QualityKart's <a href="#">Conditions of Use</a> and <a href="#">Privacy Notice</a>.</div>
+    </div>
+    <div class="creds-box">
+      <h4>Test Credentials</h4>
+      <div class="creds-row"><code>standard_user</code> / <code>quality_kart</code></div>
+      <div class="creds-row"><code>problem_user</code> / <code>quality_kart</code></div>
+      <div class="creds-row"><code>adminUser</code> / <code>quality_kart</code></div>
+    </div>
+  </div>
+
+  <!-- SHOP -->
+  <div id="shop-page" class="hidden">
+    <div class="header-top">
+      <div class="logo-link" onclick="goHome()"><span class="brand">Quality<span class="a">Kart</span></span></div>
+      <div class="deliver-to" onclick="navPage('account')"><span class="l1">Deliver to</span><span class="l2">📍 <span id="user-name-header">Guest</span></span></div>
+      <div class="search-bar">
+        <select class="search-cat"><option>All</option><option>Electronics</option><option>Accessories</option><option>Furniture</option></select>
+        <input type="text" id="search-input" placeholder="Search QualityKart"/>
+        <button onclick="performSearch()">🔍</button>
+      </div>
+      <div class="header-link" onclick="navPage('account')"><span class="l1">Hello, <span id="user-name">Guest</span></span><span class="l2">Account &amp; Lists</span></div>
+      <div class="header-link" onclick="navPage('returns')"><span class="l1">Returns</span><span class="l2">&amp; Orders</span></div>
+      <div class="cart-link" onclick="openCart()"><span class="cart-count" id="cart-badge">0</span><span class="cart-icon">🛒</span><span class="cart-text">Cart</span></div>
+      <div class="header-link" onclick="logout()"><span class="l1">&nbsp;</span><span class="l2">Sign Out</span></div>
+    </div>
+
+    <div class="subnav" id="subnav">
+      <div class="subnav-item bold active" data-filter="all" onclick="handleNavClick(this)">☰ All</div>
+      <div class="subnav-item" data-filter="deals" onclick="handleNavClick(this)">Today's Deals</div>
+      <div class="subnav-item" data-page="customer-service" onclick="handleNavClick(this)">Customer Service</div>
+      <div class="subnav-item" data-page="registry" onclick="handleNavClick(this)">Registry</div>
+      <div class="subnav-item" data-page="gift-cards" onclick="handleNavClick(this)">Gift Cards</div>
+      <div class="subnav-item" data-page="sell" onclick="handleNavClick(this)">Sell</div>
+      <div class="subnav-item" data-filter="bestsellers" onclick="handleNavClick(this)">Best Sellers</div>
+      <div class="subnav-item" data-filter="new" onclick="handleNavClick(this)">New Releases</div>
+      <div class="subnav-item" data-page="books" onclick="handleNavClick(this)">Books</div>
+    </div>
+
+    <div id="hero-wrap">
+      <div class="hero-strip"><div>⚡ <strong>Lightning Deals</strong> &nbsp;|&nbsp; Free shipping on orders over $35 &nbsp;|&nbsp; Prime members get next-day delivery</div><div class="right">Showing results for your region</div></div>
+    </div>
+
+    <!-- LISTING -->
+    <div id="listing-view">
+      <div class="breadcrumb"><a onclick="goHome()">QualityKart</a><span class="sep">›</span><a onclick="goHome()">Electronics</a><span class="sep">›</span><span id="listing-bc">All Products</span></div>
+      <div class="layout">
+        <aside class="sidebar">
+          <div class="sidebar-section"><h3>Department</h3><span class="opt active">All Electronics</span><span class="opt">Computers &amp; Accessories</span><span class="opt">Audio</span><span class="opt">Wearable Tech</span><span class="opt">Office Products</span></div>
+          <div class="sidebar-section"><h3>Customer Reviews</h3><span class="opt review"><span class="stars">★★★★☆</span><span class="count">&amp; Up</span></span><span class="opt review"><span class="stars">★★★☆☆</span><span class="count">&amp; Up</span></span></div>
+          <div class="sidebar-section"><h3>Price</h3><span class="opt">Under $25</span><span class="opt">$25 to $50</span><span class="opt">$50 to $100</span><span class="opt">$100 to $200</span><span class="opt">$200 &amp; Above</span></div>
+          <div class="sidebar-section"><h3>Brand</h3><span class="opt">QK Originals</span><span class="opt">TechPro</span><span class="opt">SoundCore</span><span class="opt">ErgoLab</span></div>
+        </aside>
+        <main>
+          <div id="listing-banner" class="listing-banner hidden"></div>
+          <div class="results-header">
+            <div><h2 id="results-title">Electronics &amp; Accessories</h2><div class="results-count" id="results-count">1-10 of 10 results</div></div>
+            <div class="sort-control"><label>Sort by:</label>
+              <select id="sort-select" onchange="applyFilters()">
+                <option value="default">Featured</option>
+                <option value="price-asc">Price: Low to High</option>
+                <option value="price-desc">Price: High to Low</option>
+                <option value="name-asc">Name: A to Z</option>
+                <option value="name-desc">Name: Z to A</option>
+                <option value="rating">Avg. Customer Review</option>
+              </select>
+            </div>
+          </div>
+          <div class="product-grid" id="product-grid"></div>
+        </main>
+      </div>
+    </div>
+
+    <!-- DETAIL -->
+    <div id="detail-view" class="hidden">
+      <div class="breadcrumb"><a onclick="goHome()">QualityKart</a><span class="sep">›</span><a onclick="goHome()">Electronics</a><span class="sep">›</span><span id="detail-bc-name">Product</span></div>
+      <div class="detail-back"><a onclick="goHome()">‹ Back to results</a></div>
+      <div class="detail-layout" id="detail-layout"></div>
+      <div class="specs-section" id="specs-section"></div>
+      <div class="reviews-section" id="reviews-section"></div>
+      <div class="related-section" id="related-section"></div>
+    </div>
+
+    <!-- CHECKOUT -->
+    <div id="checkout-view" class="hidden">
+      <div class="breadcrumb"><a onclick="goHome()">QualityKart</a><span class="sep">›</span><span>Checkout</span></div>
+      <div class="checkout-page" id="checkout-page"></div>
+    </div>
+
+    <!-- CONFIRMATION -->
+    <div id="confirmation-view" class="hidden">
+      <div class="confirm-page" id="confirm-page"></div>
+    </div>
+
+    <!-- CONTENT PAGES -->
+    <div id="content-view" class="hidden"></div>
+
+    <div class="footer-back" onclick="window.scrollTo({top:0,behavior:'smooth'})">Back to top</div>
+    <footer class="footer-main">
+      <div class="footer-cols">
+        <div class="footer-col"><h4>Get to Know Us</h4><a>Careers</a><a>About QualityKart</a><a>Press Releases</a></div>
+        <div class="footer-col"><h4>Make Money with Us</h4><a onclick="handleNavClick(document.querySelector('[data-page=sell]'))">Sell on QualityKart</a><a>Become an Affiliate</a></div>
+        <div class="footer-col"><h4>Let Us Help You</h4><a onclick="navPage('returns')">Your Orders</a><a onclick="handleNavClick(document.querySelector('[data-page=customer-service]'))">Customer Service</a><a onclick="handleNavClick(document.querySelector('[data-page=gift-cards]'))">Gift Cards</a></div>
+      </div>
+    </footer>
+    <div class="footer-bottom"><span class="brand">Quality<span style="color:#FF9900">Kart</span></span>© 2026 QualityKart Demo · QA Practice Site</div>
+  </div>
+
+  <!-- CART DRAWER -->
+  <div class="cart-overlay" id="cart-overlay" onclick="closeCart()"></div>
+  <div class="cart-drawer" id="cart-drawer">
+    <div class="cart-header"><h2>Shopping Cart</h2><button class="cart-close" onclick="closeCart()">×</button></div>
+    <div class="cart-items" id="cart-items"></div>
+    <div class="cart-footer">
+      <div class="cart-subtotal">Subtotal: <strong>$<span id="cart-total">0.00</span></strong></div>
+      <button class="checkout-btn" onclick="goToCheckout()">Proceed to Checkout</button>
+    </div>
+  </div>
+
+  <!-- GOOGLE MODAL -->
+  <div class="google-overlay" id="google-overlay">
+    <div class="google-modal">
+      <button class="google-close-x" onclick="closeGoogleSignIn()">×</button>
+      <div class="g-step" id="g-step-email">
+        <svg class="g-logo-big" viewBox="0 0 272 92"><path fill="#EA4335" d="M115.75 47.18c0 12.77-9.99 22.18-22.25 22.18s-22.25-9.41-22.25-22.18C71.25 34.32 81.24 25 93.5 25s22.25 9.32 22.25 22.18zm-9.74 0c0-7.98-5.79-13.44-12.51-13.44S80.99 39.2 80.99 47.18c0 7.9 5.79 13.44 12.51 13.44s12.51-5.55 12.51-13.44z"/><path fill="#FBBC05" d="M163.75 47.18c0 12.77-9.99 22.18-22.25 22.18s-22.25-9.41-22.25-22.18c0-12.85 9.99-22.18 22.25-22.18s22.25 9.32 22.25 22.18zm-9.74 0c0-7.98-5.79-13.44-12.51-13.44s-12.51 5.46-12.51 13.44c0 7.9 5.79 13.44 12.51 13.44s12.51-5.55 12.51-13.44z"/><path fill="#4285F4" d="M209.75 26.34v39.82c0 16.38-9.66 23.07-21.08 23.07-10.75 0-17.22-7.19-19.66-13.07l8.48-3.53c1.51 3.61 5.21 7.87 11.17 7.87 7.31 0 11.84-4.51 11.84-13v-3.19h-.34c-2.18 2.69-6.38 5.04-11.68 5.04-11.09 0-21.25-9.66-21.25-22.09 0-12.52 10.16-22.26 21.25-22.26 5.29 0 9.49 2.35 11.68 4.96h.34v-3.61h9.25zm-8.56 20.92c0-7.81-5.21-13.52-11.84-13.52-6.72 0-12.35 5.71-12.35 13.52 0 7.73 5.63 13.36 12.35 13.36 6.63 0 11.84-5.63 11.84-13.36z"/><path fill="#34A853" d="M225 3v65h-9.5V3h9.5z"/><path fill="#EA4335" d="M262.02 54.48l7.56 5.04c-2.44 3.61-8.32 9.83-18.48 9.83-12.6 0-22.01-9.74-22.01-22.18 0-13.19 9.49-22.18 20.92-22.18 11.51 0 17.14 9.16 18.98 14.11l1.01 2.52-29.65 12.28c2.27 4.45 5.8 6.72 10.75 6.72 4.96 0 8.4-2.44 10.92-6.14zm-23.27-7.98l19.82-8.23c-1.09-2.77-4.37-4.7-8.23-4.7-4.95 0-11.84 4.37-11.59 12.93z"/><path fill="#4285F4" d="M35.29 41.41V32H67c.31 1.64.47 3.58.47 5.68 0 7.06-1.93 15.79-8.15 22.01-6.05 6.3-13.78 9.66-24.02 9.66C16.32 69.35.36 53.89.36 34.91.36 15.93 16.32.47 35.3.47c10.5 0 17.98 4.12 23.6 9.49l-6.64 6.64c-4.03-3.78-9.49-6.72-16.97-6.72-13.86 0-24.7 11.17-24.7 25.03 0 13.86 10.84 25.03 24.7 25.03 8.99 0 14.11-3.61 17.39-6.89 2.66-2.66 4.41-6.46 5.1-11.65l-22.49.01z"/></svg>
+        <h1>Sign in</h1><p class="g-sub">to continue to QualityKart</p>
+        <div class="g-input-wrap"><input type="email" id="g-email" placeholder=" "/><label>Email or phone</label></div>
+        <div id="g-email-error" class="g-inline-error hidden">⚠ Enter an email or phone number</div>
+        <a class="g-forgot">Forgot email?</a>
+        <p class="g-fine">Not your computer? Use Guest mode to sign in privately. <a>Learn more</a></p>
+        <div class="g-actions"><a class="g-create">Create account</a><button class="g-btn" onclick="googleEmailNext()">Next</button></div>
+      </div>
+      <div class="g-step hidden" id="g-step-password">
+        <svg class="g-logo-big" viewBox="0 0 272 92"><path fill="#EA4335" d="M115.75 47.18c0 12.77-9.99 22.18-22.25 22.18s-22.25-9.41-22.25-22.18C71.25 34.32 81.24 25 93.5 25s22.25 9.32 22.25 22.18zm-9.74 0c0-7.98-5.79-13.44-12.51-13.44S80.99 39.2 80.99 47.18c0 7.9 5.79 13.44 12.51 13.44s12.51-5.55 12.51-13.44z"/><path fill="#FBBC05" d="M163.75 47.18c0 12.77-9.99 22.18-22.25 22.18s-22.25-9.41-22.25-22.18c0-12.85 9.99-22.18 22.25-22.18s22.25 9.32 22.25 22.18zm-9.74 0c0-7.98-5.79-13.44-12.51-13.44s-12.51 5.46-12.51 13.44c0 7.9 5.79 13.44 12.51 13.44s12.51-5.55 12.51-13.44z"/><path fill="#4285F4" d="M209.75 26.34v39.82c0 16.38-9.66 23.07-21.08 23.07-10.75 0-17.22-7.19-19.66-13.07l8.48-3.53c1.51 3.61 5.21 7.87 11.17 7.87 7.31 0 11.84-4.51 11.84-13v-3.19h-.34c-2.18 2.69-6.38 5.04-11.68 5.04-11.09 0-21.25-9.66-21.25-22.09 0-12.52 10.16-22.26 21.25-22.26 5.29 0 9.49 2.35 11.68 4.96h.34v-3.61h9.25zm-8.56 20.92c0-7.81-5.21-13.52-11.84-13.52-6.72 0-12.35 5.71-12.35 13.52 0 7.73 5.63 13.36 12.35 13.36 6.63 0 11.84-5.63 11.84-13.36z"/><path fill="#34A853" d="M225 3v65h-9.5V3h9.5z"/><path fill="#EA4335" d="M262.02 54.48l7.56 5.04c-2.44 3.61-8.32 9.83-18.48 9.83-12.6 0-22.01-9.74-22.01-22.18 0-13.19 9.49-22.18 20.92-22.18 11.51 0 17.14 9.16 18.98 14.11l1.01 2.52-29.65 12.28c2.27 4.45 5.8 6.72 10.75 6.72 4.96 0 8.4-2.44 10.92-6.14zm-23.27-7.98l19.82-8.23c-1.09-2.77-4.37-4.7-8.23-4.7-4.95 0-11.84 4.37-11.59 12.93z"/><path fill="#4285F4" d="M35.29 41.41V32H67c.31 1.64.47 3.58.47 5.68 0 7.06-1.93 15.79-8.15 22.01-6.05 6.3-13.78 9.66-24.02 9.66C16.32 69.35.36 53.89.36 34.91.36 15.93 16.32.47 35.3.47c10.5 0 17.98 4.12 23.6 9.49l-6.64 6.64c-4.03-3.78-9.49-6.72-16.97-6.72-13.86 0-24.7 11.17-24.7 25.03 0 13.86 10.84 25.03 24.7 25.03 8.99 0 14.11-3.61 17.39-6.89 2.66-2.66 4.41-6.46 5.1-11.65l-22.49.01z"/></svg>
+        <h1>Welcome</h1>
+        <div class="g-user-chip" onclick="googleBackToEmail()"><span class="g-avatar" id="g-avatar-letter">U</span><span id="g-email-display">user@gmail.com</span><span style="font-size:10px;color:#5f6368;margin-left:2px">▼</span></div>
+        <div id="g-pw-error" class="g-error-box hidden"><span>⚠</span><span>Couldn't sign you in. The Google sign-in service is temporarily unavailable. Please use your username and password instead.</span></div>
+        <div class="g-input-wrap"><input type="password" id="g-password" placeholder=" "/><label>Enter your password</label></div>
+        <label class="g-checkbox"><input type="checkbox" onchange="togglePwVisibility(this)"/> Show password</label>
+        <div class="g-actions"><a class="g-create">Forgot password?</a><button class="g-btn" id="g-pw-next-btn" onclick="googlePasswordNext()">Next</button></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BUG PANEL (admin only) -->
+  <button id="toggle-bugs-btn" class="toggle-bugs-btn hidden" onclick="toggleBugPanel()">🐛 Bug Reference</button>
+  <div id="bug-panel" class="bug-panel">
+    <div class="bug-panel-header"><h3>🐛 15 Bugs — problem_user build</h3><button class="cart-close" style="color:white" onclick="toggleBugPanel()">×</button></div>
+    <div class="bug-panel-content" id="bug-list"></div>
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast"></div>
+</div>
+
+<script>
+const products=[
+  {id:1,name:"Wireless Bluetooth Headphones",brand:"SoundCore",price:79.99,rating:4.5,reviews:12483,emoji:"🎧",description:"Premium noise-cancelling over-ear headphones with 30 hours of battery life.",bestseller:true,freeShip:true,stock:"in",specs:{Brand:"SoundCore",Connectivity:"Bluetooth 5.3","Battery Life":"30 hours","Driver Size":"40mm",Weight:"265g"},features:["Active noise cancellation","30-hour battery with quick charge","Multipoint pairing","Memory foam ear cushions"]},
+  {id:2,name:"Smart Watch Pro",brand:"TechPro",price:199.99,rating:4.7,reviews:8341,emoji:"⌚",description:"Advanced fitness tracker with heart rate, GPS, sleep tracking, and 7-day battery.",bestseller:false,freeShip:true,stock:"in",specs:{Brand:"TechPro",Display:"1.4\" AMOLED",Battery:"7 days","Water Resistance":"5 ATM",Sensors:"HR, SpO2, GPS"},features:["Continuous heart rate & SpO2","Built-in GPS","100+ workout modes","7-day battery"]},
+  {id:3,name:"Laptop Backpack",brand:"QK Originals",price:49.99,rating:4.3,reviews:3210,emoji:"🎒",description:"Water-resistant 17-inch laptop backpack with USB charging port and ergonomic straps.",bestseller:false,freeShip:true,stock:"in",specs:{Brand:"QK Originals",Material:"Water-resistant polyester","Laptop Size":"Up to 17\"",Volume:"30L","USB Port":"External"},features:["Fits laptops up to 17\"","External USB charging","Anti-theft hidden pocket","Padded back panel"]},
+  {id:4,name:"USB-C Hub 7-in-1",brand:"TechPro",price:29.99,rating:4.2,reviews:5827,emoji:"🔌",description:"7-in-1 adapter with HDMI 4K, two USB 3.0 ports, USB-C PD, SD/microSD readers.",bestseller:false,freeShip:true,stock:"low",specs:{Brand:"TechPro",Ports:"7","HDMI":"4K@30Hz","USB 3.0":"2 ports","Power Delivery":"100W","Card Reader":"SD + microSD"},features:["4K HDMI output","100W USB-C passthrough","Two USB 3.0 ports","SD and microSD reader"]},
+  {id:5,name:"Mechanical Keyboard",brand:"TechPro",price:129.99,rating:4.8,reviews:9921,emoji:"⌨️",description:"RGB backlit mechanical keyboard with hot-swappable blue switches and aluminum frame.",bestseller:true,freeShip:true,stock:"in",specs:{Brand:"TechPro","Switch Type":"Hot-swap blue",Backlighting:"Per-key RGB",Layout:"TKL (87 keys)",Connection:"USB-C",Frame:"Aluminum"},features:["Hot-swappable switches","Per-key RGB","CNC aluminum frame","Detachable USB-C"]},
+  {id:6,name:"Wireless Mouse",brand:"ErgoLab",price:24.99,rating:4.4,reviews:14502,emoji:"🖱️",description:"Ergonomic wireless mouse with silent click, adjustable DPI, and 18-month battery.",bestseller:false,freeShip:true,stock:"in",specs:{Brand:"ErgoLab",DPI:"Up to 4000","Battery Life":"18 months",Buttons:"6 programmable",Connection:"2.4GHz",Weight:"85g"},features:["Silent click","Up to 4000 DPI","18-month battery","6 programmable buttons"]},
+  {id:7,name:"4K UHD Monitor",brand:"TechPro",price:349.99,rating:4.6,reviews:2104,emoji:"🖥️",description:"27-inch IPS panel with 4K UHD, 144Hz refresh rate, HDR400 and 99% sRGB.",bestseller:false,freeShip:true,stock:"in",specs:{Brand:"TechPro",Size:"27 inches",Resolution:"3840×2160","Refresh Rate":"144Hz",Panel:"IPS","Color Gamut":"99% sRGB"},features:["4K 144Hz","HDR400 certified","99% sRGB","HDMI 2.1 & DP 1.4"]},
+  {id:8,name:"Gaming Chair",brand:"ErgoLab",price:279.99,rating:4.5,reviews:1873,emoji:"🪑",description:"Ergonomic gaming chair with lumbar support, 4D armrests, and 180° recline.",bestseller:false,freeShip:true,stock:"in",specs:{Brand:"ErgoLab",Material:"PU Leather","Max Weight":"150 kg",Recline:"90-180°",Armrests:"4D adjustable","Lumbar Support":"Adjustable"},features:["Lumbar & neck pillows","4D armrests","180° recline","Gas lift class 4"]},
+  {id:9,name:"Phone Stand",brand:"QK Originals",price:14.99,rating:4.1,reviews:6312,emoji:"📱",description:"Adjustable aluminum phone stand compatible with all phones and tablets up to 13\".",bestseller:false,freeShip:false,stock:"in",specs:{Brand:"QK Originals",Material:"Aluminum alloy",Compatibility:"Up to 13\"",Adjustable:"Yes",Weight:"180g",Color:"Space Gray"},features:["Aluminum construction","Adjustable angle","Non-slip pads","Foldable for travel"]},
+  {id:10,name:"External SSD 1TB",brand:"TechPro",price:89.99,rating:4.7,reviews:7456,emoji:"💾",description:"Portable 1TB SSD with USB 3.2 Gen 2, up to 1050MB/s and shock-resistant design.",bestseller:true,freeShip:true,stock:"in",specs:{Brand:"TechPro",Capacity:"1TB",Interface:"USB 3.2 Gen 2","Read Speed":"1050 MB/s","Write Speed":"1000 MB/s",Durability:"2m drop tested"},features:["1050 MB/s reads","Shock-resistant","USB-C & USB-A cables","Works with PC/Mac/consoles"]}
+];
+
+const mockReviews=[
+  {author:"Sarah M.",rating:5,title:"Exactly as described — love it!",body:"Arrived quickly, quality is much better than expected for the price.",date:"April 18, 2026"},
+  {author:"John D.",rating:4,title:"Great value",body:"Solid build, does what it promises. Instructions could be clearer.",date:"March 22, 2026"},
+  {author:"Emily K.",rating:5,title:"Perfect",body:"Use this every day and it has held up beautifully.",date:"February 9, 2026"},
+  {author:"Mike R.",rating:3,title:"It's okay",body:"Decent product but not as premium as pictures suggest.",date:"January 14, 2026"}
+];
+
+const bugList=[
+  {id:1,cat:"ui",title:"Typo in product name",desc:"Product #1 displays as 'Wireles Bluetoth Headphones'."},
+  {id:2,cat:"ui",title:"Wrong product image",desc:"Product #2 'Smart Watch Pro' shows a backpack emoji."},
+  {id:3,cat:"ui",title:"Price formatting error",desc:"Product #3 'Laptop Backpack' price shows '$49.99.99'."},
+  {id:4,cat:"ui",title:"Lorem ipsum in description",desc:"Product #7 '4K UHD Monitor' description shows placeholder text."},
+  {id:5,cat:"ui",title:"Misaligned button CSS",desc:"Product #10 'External SSD' Add to Cart button on listing card is shifted and overlaps the card edge."},
+  {id:6,cat:"ui",title:"Wrong currency symbol",desc:"Product #9 'Phone Stand' shows € instead of $ but cart adds it in USD."},
+  {id:7,cat:"ui",title:"Impossible rating value",desc:"Product #6 'Wireless Mouse' shows 6.0/5 stars."},
+  {id:8,cat:"func",title:"Out of Stock badge but addable",desc:"Product #8 'Gaming Chair' shows OUT OF STOCK badge but Add to Cart works."},
+  {id:9,cat:"func",title:"Add to Cart adds 2 items",desc:"Product #4 'USB-C Hub' adds 2 items per click (multiplies any selected quantity)."},
+  {id:10,cat:"func",title:"Discount displayed but not applied",desc:"Product #5 'Mechanical Keyboard' shows $90.99 with 30% OFF, but cart and checkout charge full $129.99."},
+  {id:11,cat:"func",title:"Sort: Price Low to High broken",desc:"Selecting 'Price: Low to High' sorts high to low."},
+  {id:12,cat:"func",title:"Sort: Name A to Z does nothing",desc:"Selecting 'Name: A to Z' leaves order unchanged."},
+  {id:13,cat:"func",title:"Cart badge doesn't decrement",desc:"Removing items from cart doesn't decrease the header counter."},
+  {id:14,cat:"func",title:"Search is case-sensitive",desc:"Lowercase queries like 'headphones' return 0 results."},
+  {id:15,cat:"func",title:"Cart persists after logout",desc:"Logging out and back in restores the previous cart."}
+];
+
+const VALID_USERS={standard_user:"quality_kart",problem_user:"quality_kart",adminUser:"quality_kart"};
+let currentUser=null,cart=[],buggyBadge=0,persistedCart=[],persistedBadge=0,currentDetailId=null;
+
+// AUTH
+function login(){
+  const u=document.getElementById('username').value.trim();
+  const p=document.getElementById('password').value;
+  const err=document.getElementById('error-msg');
+  const errTxt=document.getElementById('error-text');
+  if(!u||!p){errTxt.textContent=' Please enter both username and password.';err.classList.remove('hidden');return;}
+  if(VALID_USERS[u]&&VALID_USERS[u]===p){
+    currentUser=u;err.classList.add('hidden');enterShop();
+  } else {errTxt.textContent=' Your username or password is incorrect.';err.classList.remove('hidden');}
+}
+function enterShop(){
+  document.getElementById('login-page').classList.add('hidden');
+  document.getElementById('shop-page').classList.remove('hidden');
+  document.getElementById('user-name').textContent=currentUser;
+  document.getElementById('user-name-header').textContent=currentUser;
+  document.getElementById('search-input').value='';
+  document.getElementById('sort-select').value='default';
+  if(isProblem()&&persistedCart.length>0){cart=[...persistedCart];buggyBadge=persistedBadge;}
+  else{cart=[];buggyBadge=0;}
+  updateCartBadge();
+  // Bug panel only for adminUser
+  if(currentUser==='adminUser'){document.getElementById('toggle-bugs-btn').classList.remove('hidden');renderBugList();}
+  else{document.getElementById('toggle-bugs-btn').classList.add('hidden');document.getElementById('bug-panel').classList.remove('open');}
+  goHome();
+}
+function logout(){
+  if(isProblem()){persistedCart=[...cart];persistedBadge=buggyBadge;}
+  else{persistedCart=[];persistedBadge=0;}
+  currentUser=null;cart=[];buggyBadge=0;
+  document.getElementById('username').value='';
+  document.getElementById('password').value='';
+  document.getElementById('login-page').classList.remove('hidden');
+  document.getElementById('shop-page').classList.add('hidden');
+  document.getElementById('bug-panel').classList.remove('open');
+  document.getElementById('toggle-bugs-btn').classList.add('hidden');
+  closeCart();
+}
+function isProblem(){return currentUser==='problem_user';}
+
+// VIEW MANAGEMENT
+function showView(name){
+  ['listing-view','detail-view','checkout-view','confirmation-view','content-view'].forEach(v=>{
+    document.getElementById(v).classList.toggle('hidden',v!==name);
+  });
+  document.getElementById('hero-wrap').classList.toggle('hidden',name==='content-view');
+  window.scrollTo({top:0});
+}
+function goHome(){
+  document.getElementById('search-input').value='';
+  document.getElementById('sort-select').value='default';
+  document.getElementById('listing-banner').classList.add('hidden');
+  setActiveNav('all');
+  document.getElementById('results-title').textContent='Electronics & Accessories';
+  document.getElementById('listing-bc').textContent='All Products';
+  showView('listing-view');
+  renderProducts(products);
+}
+function navPage(page){renderContentPage(page);showView('content-view');setActiveNav('');}
+
+// SUBNAV
+function handleNavClick(el){
+  if(!el)return;
+  const filter=el.dataset.filter;
+  const page=el.dataset.page;
+  if(filter){setActiveNav(filter);renderFilteredListing(filter);showView('listing-view');}
+  else if(page){setActiveNav(page);renderContentPage(page);showView('content-view');}
+}
+function setActiveNav(key){
+  document.querySelectorAll('#subnav .subnav-item').forEach(el=>{
+    el.classList.toggle('active',(el.dataset.filter||el.dataset.page)===key);
+  });
+}
+function renderFilteredListing(filter){
+  const banner=document.getElementById('listing-banner');
+  let list=[...products],title='',bc='';
+  if(filter==='deals'){
+    list=products.filter(p=>p.bestseller);
+    title="⚡ Today's Lightning Deals";bc="Today's Deals";
+    banner.innerHTML=`<div style="background:linear-gradient(135deg,#232F3E,#131921);color:white;padding:20px 24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px"><div><div style="font-size:22px;font-weight:700;color:#FFD814">⚡ Today's Lightning Deals</div><div style="font-size:13px;color:#CCC;margin-top:4px">Limited-time deals — while stocks last</div></div><div style="background:#CC0C39;color:white;padding:8px 18px;border-radius:4px;font-weight:700;font-size:14px">Up to 40% OFF</div></div>`;
+    banner.classList.remove('hidden');
+  } else if(filter==='bestsellers'){
+    list=products.filter(p=>p.bestseller);
+    title="Best Sellers in Electronics";bc="Best Sellers";
+    banner.innerHTML=`<div style="background:linear-gradient(135deg,#C45500,#8B3500);color:white;padding:20px 24px"><div style="font-size:22px;font-weight:700">🏆 Best Sellers</div><div style="font-size:13px;color:rgba(255,255,255,.8);margin-top:4px">Our most popular products based on sales</div></div>`;
+    banner.classList.remove('hidden');
+  } else if(filter==='new'){
+    list=[...products].slice().reverse();
+    title="New Releases";bc="New Releases";
+    banner.innerHTML=`<div style="background:linear-gradient(135deg,#067D62,#024c3c);color:white;padding:20px 24px"><div style="font-size:22px;font-weight:700">✨ New &amp; Noteworthy</div><div style="font-size:13px;color:rgba(255,255,255,.8);margin-top:4px">The latest arrivals in Electronics &amp; Accessories</div></div>`;
+    banner.classList.remove('hidden');
+  } else {
+    banner.classList.add('hidden');title='Electronics & Accessories';bc='All Products';
+  }
+  document.getElementById('results-title').textContent=title||'Electronics & Accessories';
+  document.getElementById('listing-bc').textContent=bc||'All Products';
+  document.getElementById('sort-select').value='default';
+  renderProducts(list,filter);
+}
+
+// CONTENT PAGES
+function renderContentPage(page){
+  const el=document.getElementById('content-view');
+  const pages={
+    'customer-service':renderCustomerService,
+    'registry':renderRegistry,
+    'gift-cards':renderGiftCards,
+    'sell':renderSell,
+    'books':renderBooks,
+    'account':renderAccount,
+    'returns':renderReturns
+  };
+  el.innerHTML=(pages[page]||renderAccount)();
+}
+
+function renderCustomerService(){
+  const topics=[{icon:'📦',l:'Track Order'},{icon:'↩️',l:'Returns & Refunds'},{icon:'💳',l:'Payments'},{icon:'🔐',l:'Account'},{icon:'🚚',l:'Delivery'},{icon:'🛍️',l:'Products'}];
+  const faqs=[
+    {q:'How do I track my order?',a:'Go to your Orders page, select the item and click "Track Package". You\'ll see real-time updates from our courier partner.'},
+    {q:'What is the return policy?',a:'We offer 30-day hassle-free returns on most items. Items must be unused and in original packaging. Visit the Returns Centre to initiate.'},
+    {q:'How do I cancel an order?',a:'You can cancel within 30 minutes of placing an order from Order Details. After dispatch, wait for delivery then raise a return.'},
+    {q:'Why was my payment declined?',a:'Payments may fail due to incorrect card details, insufficient funds, or a bank security check. Try another card or contact your bank.'},
+    {q:'How long does delivery take?',a:'Standard: 3–5 business days. Prime: Next day. Express same-day is available in select cities.'},
+    {q:'How do I change my delivery address?',a:'Update your address before dispatch from the Order Details page. After shipping, please contact support.'}
+  ];
+  return`<div style="background:linear-gradient(135deg,#232F3E,#0F1111);color:white;padding:48px 24px;text-align:center"><h1 style="font-size:36px;font-weight:700;margin-bottom:8px">Hello, how can we help you?</h1><p style="color:#CCC;font-size:16px;margin-bottom:20px">Search our help articles or browse by topic</p><div style="display:flex;justify-content:center"><input style="padding:11px 16px;border:none;border-radius:4px 0 0 4px;font-size:14px;width:320px;max-width:60vw;outline:none" placeholder="Search help articles…"/><button style="padding:11px 18px;background:#FF9900;color:white;border:none;border-radius:0 4px 4px 0;cursor:pointer;font-size:14px;font-weight:600">Search</button></div></div>
+<div class="content-page">
+<div class="breadcrumb" style="padding:10px 0"><a onclick="goHome()">QualityKart</a><span class="sep">›</span><span>Customer Service</span></div>
+<div class="cs-topics">${topics.map(t=>`<div class="cs-topic"><div class="t-icon">${t.icon}</div><div class="t-label">${t.l}</div></div>`).join('')}</div>
+<h2 style="font-size:18px;font-weight:700;margin-bottom:12px">Frequently Asked Questions</h2>
+<div class="faq-section">${faqs.map((f,i)=>`<div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)"><span>${f.q}</span><span class="faq-toggle">+</span></div><div class="faq-a">${f.a}</div></div>`).join('')}</div>
+<h2 style="font-size:18px;font-weight:700;margin-bottom:12px">Contact Us</h2>
+<div class="contact-grid">
+  <div class="contact-method"><div class="cm-icon">📞</div><div class="cm-name">Call Us</div><div class="cm-detail">1-800-QKART-01<br>Available 24/7</div></div>
+  <div class="contact-method"><div class="cm-icon">✉️</div><div class="cm-name">Email</div><div class="cm-detail">support@qualitykart.com<br>Reply within 24 hrs</div></div>
+  <div class="contact-method"><div class="cm-icon">💬</div><div class="cm-name">Live Chat</div><div class="cm-detail">Chat with an agent<br>Avg. wait: 5 mins</div></div>
+</div>
+<div class="contact-form-box">
+  <h3 style="font-size:16px;font-weight:700;margin-bottom:14px">Send us a message</h3>
+  <div class="form-row"><div><label>Full name *</label><input type="text" placeholder="Jane Smith"/></div><div><label>Email *</label><input type="email" placeholder="jane@email.com"/></div></div>
+  <div class="form-row"><div><label>Order number</label><input type="text" placeholder="QK-2026-XXXXXX"/></div><div><label>Subject *</label><select><option>Select a topic</option><option>Order issue</option><option>Return / Refund</option><option>Payment problem</option><option>Account help</option><option>Other</option></select></div></div>
+  <div class="form-row full"><div><label>Message *</label><textarea rows="4" style="width:100%;padding:8px;border:1px solid #888;border-radius:4px;font-family:inherit;font-size:13px;outline:none;resize:vertical" placeholder="Describe your issue in detail…"></textarea></div></div>
+  <button class="yellow-btn" onclick="showToast('✅ Message sent! We\'ll reply within 24 hours.')" style="margin-top:8px;padding:9px 24px">Submit</button>
+</div>
+</div>`;
+}
+
+function renderRegistry(){
+  return`<div style="background:linear-gradient(135deg,#6B2D8B,#3D1A5C);color:white;padding:48px 24px;text-align:center"><h1 style="font-size:36px;font-weight:700;margin-bottom:8px">🎁 Gift Registry</h1><p style="color:#DDD;font-size:16px">Create a wish list for any occasion</p></div>
+<div class="content-page">
+<div class="breadcrumb" style="padding:10px 0"><a onclick="goHome()">QualityKart</a><span class="sep">›</span><span>Registry</span></div>
+<div class="registry-grid">
+  <div class="reg-card">
+    <h3>✨ Create a Registry</h3>
+    <p>Build a wish list for your special occasion and share it with friends and family.</p>
+    <div class="occasion-chips">
+      ${['💍 Wedding','👶 Baby','🎂 Birthday','🎄 Holiday','🎓 Graduation'].map((o,i)=>`<span class="occ-chip${i===0?' active':''}" onclick="this.parentNode.querySelectorAll('.occ-chip').forEach(c=>c.classList.remove('active'));this.classList.add('active')">${o}</span>`).join('')}
+    </div>
+    <div class="form-row"><div><label>Registry name *</label><input type="text" placeholder="Sarah & Tom's Wedding"/></div><div><label>Event date *</label><input type="date"/></div></div>
+    <div class="form-row full"><div><label>Your name *</label><input type="text" placeholder="Sarah Johnson"/></div></div>
+    <div class="form-row"><div><label>Privacy</label><select><option>Public — anyone can view</option><option>Private — only with link</option></select></div><div><label>Co-registrant (optional)</label><input type="text" placeholder="Tom Johnson"/></div></div>
+    <button class="yellow-btn" onclick="showToast('🎉 Registry created! Share your link with guests.')" style="margin-top:8px;padding:9px 24px;width:100%">Create Registry</button>
+  </div>
+  <div class="reg-card">
+    <h3>🔍 Find a Registry</h3>
+    <p>Looking for a friend's or family member's registry? Search by name or email.</p>
+    <div class="form-row full" style="margin-bottom:10px"><div><label>Name or email</label><input type="text" placeholder="e.g. Sarah Johnson or sarah@email.com"/></div></div>
+    <div class="form-row"><div><label>Occasion</label><select><option>Any occasion</option><option>Wedding</option><option>Baby</option><option>Birthday</option><option>Holiday</option></select></div><div><label>Event date (approx.)</label><input type="date"/></div></div>
+    <button class="yellow-btn" onclick="showToast('🔍 No registries found. Try a different name or date range.')" style="margin-top:8px;padding:9px 24px;width:100%">Find Registry</button>
+    <p style="font-size:12px;color:#565959;margin-top:12px;text-align:center">Most popular occasions: 💍 Wedding · 👶 Baby · 🎂 Birthday</p>
+  </div>
+</div>
+</div>`;
+}
+
+function renderGiftCards(){
+  return`<div style="background:linear-gradient(135deg,#8B1D02,#C45500);color:white;padding:48px 24px;text-align:center"><h1 style="font-size:36px;font-weight:700;margin-bottom:8px">🎁 Gift Cards</h1><p style="color:#FFD8B2;font-size:16px">The perfect gift for any occasion — delivered instantly</p></div>
+<div class="content-page">
+<div class="breadcrumb" style="padding:10px 0"><a onclick="goHome()">QualityKart</a><span class="sep">›</span><span>Gift Cards</span></div>
+<div class="gc-layout">
+  <div>
+    <h3 style="font-size:16px;font-weight:700;margin-bottom:12px">Select an amount</h3>
+    <div class="gc-amounts">
+      ${[10,25,50,100,200].map((a,i)=>`<button class="gc-amt${i===2?' active':''}" onclick="selectGcAmt(this,${a})" id="gc-amt-${a}">$${a}</button>`).join('')}
+      <button class="gc-amt" onclick="selectGcCustom(this)">Custom</button>
+    </div>
+    <div id="gc-custom-row" class="hidden" style="margin-bottom:16px">
+      <label style="font-size:13px;font-weight:700;display:block;margin-bottom:4px">Custom amount ($5 – $2000)</label>
+      <input type="number" id="gc-custom-val" min="5" max="2000" placeholder="Enter amount" oninput="updateGcCard()" style="padding:8px 10px;border:1px solid #888;border-radius:4px;font-size:14px;width:160px;outline:none"/>
+    </div>
+    <div class="gc-card" id="gc-preview-card">
+      <div class="gc-brand">⚡ QualityKart</div>
+      <div class="gc-amount" id="gc-display-amount">$50</div>
+      <div class="gc-sub">Gift Card · Never expires</div>
+    </div>
+  </div>
+  <div class="gc-right-box">
+    <h3>Personalise your gift card</h3>
+    <div class="form-row full"><div><label>To (recipient email) *</label><input type="email" id="gc-to" placeholder="friend@email.com"/></div></div>
+    <div class="form-row full"><div><label>From (your name) *</label><input type="text" id="gc-from" placeholder="Your name"/></div></div>
+    <div class="form-row full"><div><label>Message (optional)</label><textarea rows="3" style="width:100%;padding:8px;border:1px solid #888;border-radius:4px;font-size:13px;outline:none;font-family:inherit;resize:vertical" placeholder="Happy Birthday! Hope this helps you get something special 🎉"></textarea></div></div>
+    <div class="form-row"><div><label>Delivery date</label><input type="date"/></div><div><label>Delivery method</label><select><option>Email (instant)</option><option>Printable PDF</option></select></div></div>
+    <button class="yellow-btn" onclick="buyGiftCard()" style="width:100%;padding:10px;margin-top:8px;border-radius:100px;font-size:14px">Add to Cart</button>
+    <p style="font-size:12px;color:#565959;margin-top:10px;text-align:center">Gift cards never expire · No fees · Redeemable site-wide</p>
+  </div>
+</div>
+<div style="background:white;border:1px solid #ddd;border-radius:8px;padding:20px;margin-top:24px">
+  <h3 style="font-size:16px;font-weight:700;margin-bottom:12px">Redeem a Gift Card</h3>
+  <div style="display:flex;gap:0;max-width:400px">
+    <input type="text" placeholder="Enter gift card code" style="flex:1;padding:9px 12px;border:1px solid #888;border-radius:4px 0 0 4px;font-size:13px;outline:none"/>
+    <button class="yellow-btn" onclick="showToast('❌ Invalid gift card code. Please check and try again.')" style="border-radius:0 4px 4px 0;border-left:none">Redeem</button>
+  </div>
+</div>
+</div>`;
+}
+
+let gcAmt=50;
+function selectGcAmt(btn,amt){
+  gcAmt=amt;
+  document.querySelectorAll('.gc-amt').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('gc-custom-row').classList.add('hidden');
+  document.getElementById('gc-display-amount').textContent='$'+amt;
+}
+function selectGcCustom(btn){
+  document.querySelectorAll('.gc-amt').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('gc-custom-row').classList.remove('hidden');
+}
+function updateGcCard(){
+  const v=parseInt(document.getElementById('gc-custom-val').value)||0;
+  gcAmt=v;
+  document.getElementById('gc-display-amount').textContent=v?'$'+v:'$?';
+}
+function buyGiftCard(){
+  const to=document.getElementById('gc-to').value.trim();
+  const from=document.getElementById('gc-from').value.trim();
+  if(!to||!from){showToast('⚠ Please fill in the recipient email and your name.');return;}
+  if(!gcAmt||gcAmt<5){showToast('⚠ Please select or enter a valid amount ($5 minimum).');return;}
+  cart.push({id:99,name:`QualityKart Gift Card ($${gcAmt})`,price:gcAmt,emoji:'🎁'});
+  buggyBadge++;updateCartBadge();
+  showToast('🎁 Gift card added to your cart!');
+}
+
+function renderSell(){
+  return`<div style="background:linear-gradient(135deg,#232F3E,#131921);color:white;padding:56px 24px;text-align:center"><h1 style="font-size:40px;font-weight:700;margin-bottom:10px">Start Selling on QualityKart</h1><p style="color:#CCC;font-size:18px;margin-bottom:24px">Reach millions of customers and grow your business</p><button class="orange-btn" style="padding:12px 32px;font-size:16px;border-radius:4px" onclick="document.getElementById('sell-form').scrollIntoView({behavior:'smooth'})">Start Today — It's Free</button></div>
+<div class="content-page">
+<div class="breadcrumb" style="padding:10px 0"><a onclick="goHome()">QualityKart</a><span class="sep">›</span><span>Sell on QualityKart</span></div>
+<div class="sell-stats">
+  <div class="stat-card"><div class="s-num">300M+</div><div class="s-label">Active customers worldwide</div></div>
+  <div class="stat-card"><div class="s-num">150+</div><div class="s-label">Countries we ship to</div></div>
+  <div class="stat-card"><div class="s-num">$2.8B</div><div class="s-label">Paid to sellers monthly</div></div>
+</div>
+<h2 style="font-size:20px;font-weight:700;margin-bottom:16px">How it works</h2>
+<div class="steps-grid">
+  <div class="step-card"><div class="s-step">1</div><div class="s-title">List your products</div><div class="s-desc">Upload photos, set prices and write descriptions in minutes.</div></div>
+  <div class="step-card"><div class="s-step">2</div><div class="s-title">Customers discover you</div><div class="s-desc">Your products appear in search results to millions of shoppers.</div></div>
+  <div class="step-card"><div class="s-step">3</div><div class="s-title">Ship with ease</div><div class="s-desc">Use QualityKart Logistics or ship yourself — your choice.</div></div>
+  <div class="step-card"><div class="s-step">4</div><div class="s-title">Get paid</div><div class="s-desc">Funds deposited to your account every 14 days. No surprises.</div></div>
+</div>
+<h2 style="font-size:20px;font-weight:700;margin-bottom:16px" id="sell-form">Register as a Seller</h2>
+<div class="sell-form-box">
+  <h3>Create your seller account</h3>
+  <div class="form-row"><div><label>Business / Store name *</label><input type="text" placeholder="My Amazing Store"/></div><div><label>Business email *</label><input type="email" placeholder="seller@business.com"/></div></div>
+  <div class="form-row"><div><label>Primary category *</label><select><option>Select a category</option><option>Electronics</option><option>Clothing</option><option>Home & Garden</option><option>Books</option><option>Toys & Games</option><option>Sports</option><option>Other</option></select></div><div><label>Monthly sales volume</label><select><option>Just starting</option><option>Up to $1,000/mo</option><option>$1,000 – $10,000/mo</option><option>$10,000+/mo</option></select></div></div>
+  <div class="form-row full"><div><label>How did you hear about us?</label><select><option>Select</option><option>Google search</option><option>Social media</option><option>Friend/colleague</option><option>QualityKart email</option><option>Other</option></select></div></div>
+  <button class="yellow-btn" onclick="showToast('🎉 Application received! We\'ll contact you within 2 business days.')" style="width:100%;padding:10px;margin-top:8px;border-radius:100px;font-size:14px">Submit Application</button>
+  <p style="font-size:12px;color:#565959;margin-top:10px;text-align:center">Free to join · No monthly fees · Pay only when you sell</p>
+</div>
+</div>`;
+}
+
+function renderBooks(){
+  const cats=['All','Fiction','Non-Fiction','Science & Tech','History','Biography','Self-Help','Kids','Comics'];
+  return`<div style="background:linear-gradient(135deg,#5C4033,#3E2C23);color:white;padding:48px 24px;text-align:center"><h1 style="font-size:36px;font-weight:700;margin-bottom:8px">📚 Books</h1><p style="color:#D4A98A;font-size:16px">Explore our growing collection of titles</p></div>
+<div class="content-page">
+<div class="breadcrumb" style="padding:10px 0"><a onclick="goHome()">QualityKart</a><span class="sep">›</span><span>Books</span></div>
+<div class="book-cats" id="book-cats">${cats.map((c,i)=>`<span class="book-cat${i===0?' active':''}" onclick="selectBookCat(this)">${c}</span>`).join('')}</div>
+<div class="books-empty-state">
+  <div class="be-icon">📦</div>
+  <h3>No books available in this category yet</h3>
+  <p>We're working hard to bring you a great selection of books.<br>Be the first to know when we launch!</p>
+  <div class="notify-row">
+    <input type="email" placeholder="Enter your email address"/>
+    <button onclick="showToast('✅ You\'re on the list! We\'ll notify you when books launch.')">Notify Me</button>
+  </div>
+  <p style="font-size:12px;color:#565959;margin-top:14px">No spam. Unsubscribe at any time.</p>
+</div>
+</div>`;
+}
+function selectBookCat(el){
+  document.querySelectorAll('.book-cat').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+}
+
+function renderAccount(){
+  return`<div class="content-page" style="padding-top:28px">
+<div class="breadcrumb" style="padding:0 0 10px"><a onclick="goHome()">QualityKart</a><span class="sep">›</span><span>Your Account</span></div>
+<h1 style="font-size:28px;font-weight:400;margin-bottom:20px">Your Account</h1>
+<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px">
+  ${[{icon:'📦',title:'Your Orders',desc:'Track, return or buy things again',action:"navPage('returns')"},
+     {icon:'🔐',title:'Login & Security',desc:'Edit login, name and mobile number',action:"showToast('Login & Security settings coming soon.')"},
+     {icon:'🏠',title:'Your Addresses',desc:'Edit, remove or set default address',action:"showToast('Address book coming soon.')"},
+     {icon:'💳',title:'Payment Methods',desc:'Manage payment methods and settings',action:"showToast('Payment methods coming soon.')"},
+     {icon:'🎁',title:'Gift Cards',desc:'View your balance and redeem cards',action:"handleNavClick(document.querySelector('[data-page=gift-cards]'))"},
+     {icon:'📋',title:'Your Lists',desc:'View, modify and share your lists',action:"showToast('Your lists coming soon.')"}
+    ].map(c=>`<div onclick="${c.action}" style="background:white;border:1px solid #ddd;border-radius:8px;padding:20px;cursor:pointer;transition:box-shadow .15s" onmouseover="this.style.boxShadow='0 2px 8px rgba(0,0,0,.1)'" onmouseout="this.style.boxShadow=''"><div style="font-size:32px;margin-bottom:10px">${c.icon}</div><div style="font-weight:700;font-size:14px;margin-bottom:4px">${c.title}</div><div style="font-size:12px;color:#565959">${c.desc}</div></div>`).join('')}
+</div>
+</div>`;
+}
+
+function renderReturns(){
+  return`<div class="content-page" style="padding-top:28px">
+<div class="breadcrumb" style="padding:0 0 10px"><a onclick="goHome()">QualityKart</a><span class="sep">›</span><span>Returns & Orders</span></div>
+<h1 style="font-size:28px;font-weight:400;margin-bottom:6px">Your Orders</h1>
+<p style="color:#565959;margin-bottom:20px">No orders yet. Start shopping to see your orders here.</p>
+<div style="background:white;border:1px solid #ddd;border-radius:8px;padding:60px 20px;text-align:center">
+  <div style="font-size:64px;margin-bottom:16px">🛒</div>
+  <h3 style="font-size:20px;margin-bottom:8px">You haven't placed any orders yet</h3>
+  <p style="color:#565959;margin-bottom:20px">Browse our selection and place your first order!</p>
+  <button class="yellow-btn" onclick="goHome()" style="padding:10px 24px;border-radius:100px">Start Shopping</button>
+</div>
+</div>`;
+}
+
+// FAQ TOGGLE
+function toggleFaq(el){
+  const ans=el.nextElementSibling;
+  const tog=el.querySelector('.faq-toggle');
+  ans.classList.toggle('open');
+  tog.classList.toggle('open');
+}
+
+// RENDER PRODUCTS
+function renderProducts(list,filter){
+  const grid=document.getElementById('product-grid');
+  grid.innerHTML='';
+  document.getElementById('results-count').textContent='1-'+list.length+' of '+list.length+' result'+(list.length===1?'':'s');
+  if(!list.length){
+    grid.innerHTML='<div style="grid-column:1/-1;text-align:center;background:white;border-radius:8px;padding:60px 20px"><h3 style="font-size:18px;margin-bottom:8px">No results found</h3><div style="color:#565959">Try a different search term.</div></div>';
+    return;
+  }
+  list.forEach((p,rank)=>{
+    const card=document.createElement('div');
+    card.className='product-card';
+    const v=getDisplayValues(p);
+    if(v.cssBroken)card.classList.add('css-broken');
+    let extraBadge='';
+    if(filter==='bestsellers')extraBadge=`<span class="badge rank">#${rank+1}</span>`;
+    if(filter==='new')extraBadge=`<span class="badge new-tag">NEW</span>`;
+    card.innerHTML=`
+      <div class="badge-row"><span>${v.leftBadge||extraBadge}</span><span>${v.rightBadge}</span></div>
+      <div class="product-image">${v.emoji}</div>
+      <div class="product-brand">${p.brand}</div>
+      <div class="product-name">${v.name}</div>
+      <div class="product-rating-row"><span class="stars">${v.stars}</span><span style="font-size:12px;color:#565959">${v.rating.toFixed(1)}</span><span class="reviews">(${p.reviews.toLocaleString()})</span></div>
+      <div class="product-price-row"><span class="product-price">${v.priceHtml}</span></div>
+      <div class="product-meta">${v.description}</div>
+      ${p.freeShip?'<div class="free-ship"><strong>FREE delivery</strong> Tomorrow</div>':'<div class="free-ship" style="color:#565959">Standard shipping</div>'}
+      ${p.stock==='low'?'<span class="stock-status low">Only 3 left in stock</span>':'<span class="stock-status in">In Stock</span>'}
+      <button class="add-to-cart-btn">Add to Cart</button>`;
+    card.addEventListener('click',()=>showDetail(p.id));
+    card.querySelector('.add-to-cart-btn').addEventListener('click',e=>{e.stopPropagation();addToCart(p.id,e.target,1);});
+    grid.appendChild(card);
+  });
+}
+
+function getDisplayValues(p){
+  let name=p.name,emoji=p.emoji,rating=p.rating,description=p.description;
+  let leftBadge=p.bestseller?'<span class="badge bestseller">Best Seller</span>':'';
+  let rightBadge='',cssBroken=false;
+  let priceHtml=`<span class="sup">$</span>${p.price.toFixed(2).split('.')[0]}<span class="sup">${p.price.toFixed(2).split('.')[1]}</span>`;
+  let detailPrice=`<span class="sup">$</span>${p.price.toFixed(2).split('.')[0]}<span class="sup">.${p.price.toFixed(2).split('.')[1]}</span>`;
+  if(isProblem()){
+    if(p.id===1)name="Wireles Bluetoth Headphones";
+    if(p.id===2)emoji="🎒";
+    if(p.id===3){priceHtml=`<span class="sup">$</span>49<span class="sup">.99.99</span>`;detailPrice=`<span class="sup">$</span>49<span class="sup">.99.99</span>`;}
+    if(p.id===7)description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.";
+    if(p.id===10)cssBroken=true;
+    if(p.id===9){priceHtml=`<span class="sup">€</span>14<span class="sup">99</span>`;detailPrice=`<span class="sup">€</span>14<span class="sup">.99</span>`;}
+    if(p.id===6)rating=6.0;
+    if(p.id===8)rightBadge='<span class="badge oos">Out of Stock</span>';
+    if(p.id===5){priceHtml=`<span class="strike-price">$129.99</span><span class="sup">$</span>90<span class="sup">99</span>`;detailPrice=`<span class="sup">$</span>90<span class="sup">.99</span>`;rightBadge='<span class="badge discount">30% OFF</span>';}
+  }
+  let stars='';
+  if(rating>5)stars='★★★★★★';
+  else{const f=Math.floor(rating),h=(rating%1)>=.5;for(let i=0;i<f;i++)stars+='★';if(h)stars+='☆';for(let i=f+(h?1:0);i<5;i++)stars+='☆';}
+  return{name,emoji,rating,description,leftBadge,rightBadge,cssBroken,priceHtml,detailPrice,stars};
+}
+
+// DETAIL
+function showDetail(id){
+  currentDetailId=id;
+  const p=products.find(x=>x.id===id);if(!p)return;
+  const v=getDisplayValues(p);
+  document.getElementById('detail-bc-name').textContent=v.name;
+  const discountInfo=(isProblem()&&p.id===5)?`<span class="strike">$129.99</span><span class="save">Save 30%</span>`:'';
+  const oosLabel=(isProblem()&&p.id===8)?'<span class="bb-stock oos">Out of Stock</span>':'<span class="bb-stock">In Stock</span>';
+  document.getElementById('detail-layout').innerHTML=`
+    <div class="detail-img">${v.emoji}</div>
+    <div class="detail-info">
+      <span class="detail-brand">Visit the ${p.brand} Store</span>
+      <h1>${v.name}</h1>
+      <div class="detail-rating-row"><span class="stars">${v.stars}</span><span>${v.rating.toFixed(1)} out of 5</span><a class="reviews-link">${p.reviews.toLocaleString()} ratings</a></div>
+      <div class="detail-price-block"><span class="price">${v.detailPrice}</span>${discountInfo}</div>
+      <div class="detail-about"><h3>About this item</h3><ul>${p.features.map(f=>`<li>${f}</li>`).join('')}</ul><p class="detail-desc">${v.description}</p></div>
+    </div>
+    <div class="buy-box">
+      <div class="bb-price">${v.detailPrice}</div>
+      <div class="bb-ship">${p.freeShip?'<strong>FREE</strong> delivery <strong>Tomorrow</strong>':'Standard delivery in 3–5 days'}</div>
+      <div style="font-size:12px;color:#565959;margin-bottom:12px">Or fastest delivery today, 2 PM – 6 PM</div>
+      ${oosLabel}
+      <div class="qty-row"><label>Qty:</label><select id="detail-qty">${[1,2,3,4,5].map(n=>`<option value="${n}">${n}</option>`).join('')}</select></div>
+      <button class="yellow-btn" id="detail-add-btn" onclick="detailAddToCart()">Add to Cart</button>
+      <button class="orange-btn" onclick="detailBuyNow()">Buy Now</button>
+    </div>`;
+  document.getElementById('specs-section').innerHTML=`<h2>Product details</h2><table class="specs-table">${Object.entries(p.specs).map(([k,vv])=>`<tr><td>${k}</td><td>${vv}</td></tr>`).join('')}</table>`;
+  document.getElementById('reviews-section').innerHTML=`<h2>Customer reviews</h2><div style="display:flex;gap:18px;align-items:center;margin-bottom:14px"><div><div style="font-size:36px;font-weight:700">${v.rating.toFixed(1)}<span style="font-size:14px;color:#565959"> out of 5</span></div><div style="color:#FFA41C;font-size:18px">${v.stars}</div><div style="font-size:12px;color:#565959">${p.reviews.toLocaleString()} global ratings</div></div></div>${mockReviews.map(r=>`<div class="review-item"><div class="r-author">${r.author}</div><div class="r-stars">${'★'.repeat(r.rating)}${'☆'.repeat(5-r.rating)}</div><div class="r-title">${r.title}</div><div class="r-body">${r.body}</div><div class="r-date">Reviewed on ${r.date}</div></div>`).join('')}`;
+  const related=products.filter(x=>x.id!==id).slice(0,4);
+  document.getElementById('related-section').innerHTML=`<h2>Customers who bought this also bought</h2><div class="product-grid">${related.map(r=>{const rv=getDisplayValues(r);return`<div class="product-card${rv.cssBroken?' css-broken':''}" onclick="showDetail(${r.id})"><div class="badge-row"><span>${rv.leftBadge}</span><span>${rv.rightBadge}</span></div><div class="product-image">${rv.emoji}</div><div class="product-brand">${r.brand}</div><div class="product-name">${rv.name}</div><div class="product-rating-row"><span class="stars">${rv.stars}</span><span style="font-size:12px;color:#565959">${rv.rating.toFixed(1)}</span></div><div class="product-price-row"><span class="product-price">${rv.priceHtml}</span></div></div>`;}).join('')}</div>`;
+  showView('detail-view');
+}
+function detailAddToCart(){const qty=parseInt(document.getElementById('detail-qty').value,10);const btn=document.getElementById('detail-add-btn');addToCart(currentDetailId,btn,qty);}
+function detailBuyNow(){const qty=parseInt(document.getElementById('detail-qty').value,10);addToCart(currentDetailId,null,qty);goToCheckout();}
+
+// CART
+function addToCart(id,btn,quantity){
+  const p=products.find(x=>x.id===id);if(!p)return;
+  let m=1;if(isProblem()&&p.id===4)m=2;
+  const total=quantity*m;
+  for(let i=0;i<total;i++)cart.push({id:p.id,name:p.name,price:p.price,emoji:p.emoji});
+  buggyBadge+=total;updateCartBadge();
+  if(btn){btn.textContent='✓ Added';btn.classList.add('added');setTimeout(()=>{btn.textContent='Add to Cart';btn.classList.remove('added');},900);}
+}
+function updateCartBadge(){document.getElementById('cart-badge').textContent=buggyBadge;}
+function openCart(){document.getElementById('cart-overlay').classList.add('open');document.getElementById('cart-drawer').classList.add('open');renderCart();}
+function closeCart(){document.getElementById('cart-overlay').classList.remove('open');document.getElementById('cart-drawer').classList.remove('open');}
+function renderCart(){
+  const el=document.getElementById('cart-items');
+  if(!cart.length){el.innerHTML='<div class="cart-empty"><h3>Your QualityKart Cart is empty</h3><div style="font-size:13px">Shop today\'s deals to add items.</div></div>';document.getElementById('cart-total').textContent='0.00';return;}
+  el.innerHTML='';let total=0;
+  cart.forEach((item,idx)=>{
+    total+=item.price;
+    const row=document.createElement('div');row.className='cart-item';
+    row.innerHTML=`<div class="ci-img">${item.emoji}</div><div class="ci-info"><div class="ci-name">${item.name}</div><div class="ci-price">$${item.price.toFixed(2)}</div><button class="remove-btn">Delete</button></div>`;
+    row.querySelector('.remove-btn').addEventListener('click',()=>removeFromCart(idx));
+    el.appendChild(row);
+  });
+  document.getElementById('cart-total').textContent=total.toFixed(2);
+}
+function removeFromCart(idx){
+  cart.splice(idx,1);
+  if(!isProblem()){buggyBadge=cart.length;updateCartBadge();}
+  renderCart();
+}
+
+// CHECKOUT
+function goToCheckout(){
+  if(!cart.length){alert('Your cart is empty.');closeCart();return;}
+  closeCart();renderCheckout();showView('checkout-view');
+}
+function renderCheckout(){
+  const sub=cart.reduce((s,x)=>s+x.price,0);
+  const ship=sub>=35?0:5.99;
+  const tax=+(sub*.08).toFixed(2);
+  const total=+(sub+ship+tax).toFixed(2);
+  document.getElementById('checkout-page').innerHTML=`
+    <h1>Checkout (${cart.length} item${cart.length===1?'':'s'})</h1>
+    <div class="checkout-layout">
+      <div>
+        <div class="co-section">
+          <h3><span class="step-num">1</span> Shipping address</h3>
+          <div class="form-row"><div><label>Full name *</label><input type="text" id="co-name" value="${currentUser}"/></div><div><label>Phone *</label><input type="tel" id="co-phone" value="+1 555-123-4567"/></div></div>
+          <div class="form-row full"><div><label>Address *</label><input type="text" id="co-addr" value="123 Main Street"/></div></div>
+          <div class="form-row"><div><label>City *</label><input type="text" id="co-city" value="San Francisco"/></div><div><label>State *</label><input type="text" id="co-state" value="CA"/></div></div>
+          <div class="form-row"><div><label>ZIP *</label><input type="text" id="co-zip" value="94102"/></div><div><label>Country</label><select id="co-country"><option>United States</option><option>Canada</option><option>India</option><option>United Kingdom</option></select></div></div>
+        </div>
+        <div class="co-section">
+          <h3><span class="step-num">2</span> Payment method</h3>
+          <div class="form-row full"><div><label>Name on card *</label><input type="text" id="co-cname" value="${currentUser.toUpperCase()}"/></div></div>
+          <div class="form-row full"><div><label>Card number *</label><input type="text" id="co-cnum" value="4111 1111 1111 1234"/></div></div>
+          <div class="form-row"><div><label>Expiry (MM/YY) *</label><input type="text" id="co-exp" value="12/28"/></div><div><label>CVV *</label><input type="text" id="co-cvv" value="123" maxlength="4"/></div></div>
+        </div>
+        <div class="co-section">
+          <h3><span class="step-num">3</span> Review items</h3>
+          ${cart.map(item=>`<div class="co-item"><div class="co-item-img">${item.emoji}</div><div style="flex:1"><div class="co-item-name">${item.name}</div><div style="font-size:12px;color:#067D62;margin-top:2px">In Stock — FREE Shipping eligible</div></div><div class="co-item-price">$${item.price.toFixed(2)}</div></div>`).join('')}
+        </div>
+      </div>
+      <div class="order-summary">
+        <h3>Order Summary</h3>
+        <div class="s-row"><span>Items (${cart.length}):</span><span>$${sub.toFixed(2)}</span></div>
+        <div class="s-row"><span>Shipping &amp; handling:</span><span>${ship===0?'FREE':'$'+ship.toFixed(2)}</span></div>
+        <div class="s-row"><span>Estimated tax (8%):</span><span>$${tax.toFixed(2)}</span></div>
+        <div class="s-row total"><span>Order total:</span><span>$${total.toFixed(2)}</span></div>
+        <button class="place-order-btn" onclick="placeOrder(${total.toFixed(2)})">Place your order</button>
+        <p class="order-disc">By placing your order you agree to QualityKart's <a>conditions of use</a> and <a>privacy notice</a>. <strong>This is a demo — no real charge is made.</strong></p>
+      </div>
+    </div>`;
+}
+function placeOrder(total){
+  const req=['co-name','co-phone','co-addr','co-city','co-state','co-zip','co-cname','co-cnum','co-exp','co-cvv'];
+  for(const id of req){const el=document.getElementById(id);if(el&&!el.value.trim()){alert('Please fill in all required fields.');el.focus();return;}}
+  const orderNum='QK-2026-'+Math.floor(Math.random()*900000+100000);
+  const delivDate=new Date(Date.now()+3*24*60*60*1000).toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'});
+  const snap=[...cart];
+  const sub=cart.reduce((s,x)=>s+x.price,0);
+  const ship=sub>=35?0:5.99;
+  const tax=+(sub*.08).toFixed(2);
+  const addr=`${document.getElementById('co-name').value}, ${document.getElementById('co-addr').value}, ${document.getElementById('co-city').value}, ${document.getElementById('co-state').value} ${document.getElementById('co-zip').value}`;
+  const last4=document.getElementById('co-cnum').value.replace(/\s/g,'').slice(-4);
+  renderConfirmation({orderNum,delivDate,items:snap,sub,ship,tax,total,addr,last4});
+  cart=[];buggyBadge=0;persistedCart=[];persistedBadge=0;updateCartBadge();
+  showView('confirmation-view');
+}
+function renderConfirmation(o){
+  document.getElementById('confirm-page').innerHTML=`
+    <div class="confirm-banner">
+      <div class="confirm-check">✓</div>
+      <div class="confirm-text">
+        <h1>Thank you, your order has been placed.</h1>
+        <p>Confirmation sent to <strong>${currentUser}@qualitykart-demo.com</strong></p>
+        <p style="margin-top:8px">Order: <strong>${o.orderNum}</strong></p>
+        <p style="color:#067D62;font-weight:700;margin-top:6px">Arriving ${o.delivDate}</p>
+      </div>
+    </div>
+    <div class="confirm-section"><h3>Shipping to</h3><p style="font-size:13px;line-height:1.5">${o.addr}</p></div>
+    <div class="confirm-section"><h3>Payment</h3><p style="font-size:13px">Visa ending in <strong>${o.last4}</strong></p></div>
+    <div class="confirm-section"><h3>Items ordered</h3>${o.items.map(item=>`<div class="co-item"><div class="co-item-img">${item.emoji}</div><div style="flex:1"><div class="co-item-name">${item.name}</div></div><div class="co-item-price">$${item.price.toFixed(2)}</div></div>`).join('')}</div>
+    <div class="confirm-section">
+      <h3>Order summary</h3>
+      <div class="c-row"><span>Items subtotal:</span><span>$${o.sub.toFixed(2)}</span></div>
+      <div class="c-row"><span>Shipping:</span><span>${o.ship===0?'FREE':'$'+o.ship.toFixed(2)}</span></div>
+      <div class="c-row"><span>Tax:</span><span>$${o.tax.toFixed(2)}</span></div>
+      <div class="c-row" style="font-size:16px;font-weight:700;color:#B12704;border-top:1px solid #ddd;padding-top:8px;margin-top:6px"><span>Order total:</span><span>$${o.total.toFixed(2)}</span></div>
+    </div>
+    <button class="continue-btn" onclick="goHome()">Continue Shopping</button>`;
+}
+
+// SEARCH & SORT
+function applyFilters(){
+  const sortBy=document.getElementById('sort-select').value;
+  let list=[...products];
+  if(isProblem()){
+    if(sortBy==='price-asc')list.sort((a,b)=>b.price-a.price);
+    else if(sortBy==='price-desc')list.sort((a,b)=>b.price-a.price);
+    else if(sortBy==='name-asc'){/*no-op*/}
+    else if(sortBy==='name-desc')list.sort((a,b)=>b.name.localeCompare(a.name));
+    else if(sortBy==='rating')list.sort((a,b)=>b.rating-a.rating);
+  } else {
+    if(sortBy==='price-asc')list.sort((a,b)=>a.price-b.price);
+    else if(sortBy==='price-desc')list.sort((a,b)=>b.price-a.price);
+    else if(sortBy==='name-asc')list.sort((a,b)=>a.name.localeCompare(b.name));
+    else if(sortBy==='name-desc')list.sort((a,b)=>b.name.localeCompare(a.name));
+    else if(sortBy==='rating')list.sort((a,b)=>b.rating-a.rating);
+  }
+  const q=document.getElementById('search-input').value;
+  if(q.trim()){
+    if(isProblem())list=list.filter(p=>p.name.includes(q));
+    else list=list.filter(p=>p.name.toLowerCase().includes(q.toLowerCase()));
+  }
+  document.getElementById('results-title').textContent=q.trim()?`Results for "${q}"`:'Electronics & Accessories';
+  showView('listing-view');
+  renderProducts(list);
+}
+function performSearch(){applyFilters();}
+
+// TOAST
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),3000);
+}
+
+// GOOGLE SIGN-IN
+function openGoogleSignIn(){
+  document.getElementById('google-overlay').classList.add('open');
+  document.getElementById('g-step-email').classList.remove('hidden');
+  document.getElementById('g-step-password').classList.add('hidden');
+  document.getElementById('g-email').value='';
+  document.getElementById('g-password').value='';
+  document.getElementById('g-pw-error').classList.add('hidden');
+  document.getElementById('g-email-error').classList.add('hidden');
+  document.getElementById('g-email').classList.remove('has-error');
+  setTimeout(()=>document.getElementById('g-email').focus(),100);
+}
+function closeGoogleSignIn(){document.getElementById('google-overlay').classList.remove('open');}
+function googleEmailNext(){
+  const email=document.getElementById('g-email').value.trim();
+  const emailEl=document.getElementById('g-email');
+  if(!email){emailEl.classList.add('has-error');document.getElementById('g-email-error').classList.remove('hidden');emailEl.focus();return;}
+  emailEl.classList.remove('has-error');document.getElementById('g-email-error').classList.add('hidden');
+  document.getElementById('g-step-email').classList.add('hidden');
+  document.getElementById('g-step-password').classList.remove('hidden');
+  document.getElementById('g-email-display').textContent=email;
+  document.getElementById('g-avatar-letter').textContent=email[0].toUpperCase();
+  document.getElementById('g-pw-error').classList.add('hidden');
+  setTimeout(()=>document.getElementById('g-password').focus(),100);
+}
+function googleBackToEmail(){
+  document.getElementById('g-step-email').classList.remove('hidden');
+  document.getElementById('g-step-password').classList.add('hidden');
+}
+function googlePasswordNext(){
+  const btn=document.getElementById('g-pw-next-btn');
+  if(!document.getElementById('g-password').value){document.getElementById('g-password').focus();return;}
+  btn.innerHTML='<span class="g-spinner"></span>';btn.disabled=true;
+  setTimeout(()=>{btn.innerHTML='Next';btn.disabled=false;document.getElementById('g-pw-error').classList.remove('hidden');document.getElementById('g-password').value='';},1500);
+}
+function togglePwVisibility(cb){document.getElementById('g-password').type=cb.checked?'text':'password';}
+
+// BUG PANEL (admin only)
+function toggleBugPanel(){document.getElementById('bug-panel').classList.toggle('open');}
+function renderBugList(){
+  document.getElementById('bug-list').innerHTML=bugList.map(b=>`<div class="bug-item"><strong>Bug #${b.id}: ${b.title}</strong><span class="bug-cat ${b.cat}">${b.cat==='ui'?'UI':'FUNCTIONAL'}</span><div class="bug-desc">${b.desc}</div></div>`).join('');
+}
+
+// EVENTS
+document.getElementById('password').addEventListener('keyup',e=>{if(e.key==='Enter')login();});
+document.getElementById('username').addEventListener('keyup',e=>{if(e.key==='Enter')login();});
+document.getElementById('search-input').addEventListener('keyup',e=>{if(e.key==='Enter')applyFilters();});
+document.getElementById('g-email').addEventListener('keyup',e=>{if(e.key==='Enter')googleEmailNext();});
+document.getElementById('g-password').addEventListener('keyup',e=>{if(e.key==='Enter')googlePasswordNext();});
+</script>
