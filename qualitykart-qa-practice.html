@@ -401,7 +401,7 @@
       <h4>Test Credentials</h4>
       <div class="creds-row"><code>standard_user</code> / <code>quality_kart</code></div>
       <div class="creds-row"><code>problem_user</code> / <code>quality_kart</code></div>
-      <div class="creds-row"><code>adminUser</code> / <code>quality_kart</code></div>
+      <div class="creds-row" style="margin-top:8px;padding-top:8px;border-top:1px dashed #ccc;font-size:11px;color:#565959;">🔐 For admin access contact: <a href="mailto:pantpipul@gmail.com" style="color:#C7511F;">pantpipul@gmail.com</a></div>
     </div>
   </div>
 
@@ -411,7 +411,7 @@
       <div class="logo-link" onclick="goHome()"><span class="brand">Quality<span class="a">Kart</span></span></div>
       <div class="deliver-to" onclick="navPage('account')"><span class="l1">Deliver to</span><span class="l2">📍 <span id="user-name-header">Guest</span></span></div>
       <div class="search-bar">
-        <select class="search-cat"><option>All</option><option>Electronics</option><option>Accessories</option><option>Furniture</option></select>
+        <select class="search-cat" id="search-cat" onchange="handleTopNavCategory(this.value)"><option>All</option><option>Electronics</option><option>Accessories</option><option>Furniture</option></select>
         <input type="text" id="search-input" placeholder="Search QualityKart"/>
         <button onclick="performSearch()">🔍</button>
       </div>
@@ -443,8 +443,8 @@
       <div class="layout">
         <aside class="sidebar">
           <div class="sidebar-section"><h3>Department</h3><span class="opt active">All Electronics</span><span class="opt">Computers &amp; Accessories</span><span class="opt">Audio</span><span class="opt">Wearable Tech</span><span class="opt">Office Products</span></div>
-          <div class="sidebar-section"><h3>Customer Reviews</h3><span class="opt review"><span class="stars">★★★★☆</span><span class="count">&amp; Up</span></span><span class="opt review"><span class="stars">★★★☆☆</span><span class="count">&amp; Up</span></span></div>
-          <div class="sidebar-section"><h3>Price</h3><span class="opt">Under $25</span><span class="opt">$25 to $50</span><span class="opt">$50 to $100</span><span class="opt">$100 to $200</span><span class="opt">$200 &amp; Above</span></div>
+          <div class="sidebar-section"><h3>Customer Reviews</h3><span class="opt review" onclick="filterByRating(4,this)"><span class="stars">★★★★☆</span><span class="count">&amp; Up</span></span><span class="opt review" onclick="filterByRating(3,this)"><span class="stars">★★★☆☆</span><span class="count">&amp; Up</span></span></div>
+          <div class="sidebar-section"><h3>Price</h3><span class="opt" onclick="filterUnder25()">Under $25</span><span class="opt">$25 to $50</span><span class="opt">$50 to $100</span><span class="opt">$100 to $200</span><span class="opt">$200 &amp; Above</span></div>
           <div class="sidebar-section"><h3>Brand</h3><span class="opt">QK Originals</span><span class="opt">TechPro</span><span class="opt">SoundCore</span><span class="opt">ErgoLab</span></div>
         </aside>
         <main>
@@ -541,7 +541,7 @@
   <!-- BUG PANEL (admin only) -->
   <button id="toggle-bugs-btn" class="toggle-bugs-btn hidden" onclick="toggleBugPanel()">🐛 Bug Reference</button>
   <div id="bug-panel" class="bug-panel">
-    <div class="bug-panel-header"><h3>🐛 15 Bugs — problem_user build</h3><button class="cart-close" style="color:white" onclick="toggleBugPanel()">×</button></div>
+    <div class="bug-panel-header"><h3>🐛 25 Bugs — problem_user build</h3><button class="cart-close" style="color:white" onclick="toggleBugPanel()">×</button></div>
     <div class="bug-panel-content" id="bug-list"></div>
   </div>
 
@@ -571,21 +571,33 @@ const mockReviews=[
 ];
 
 const bugList=[
-  {id:1,cat:"ui",title:"Typo in product name",desc:"Product #1 displays as 'Wireles Bluetoth Headphones'."},
-  {id:2,cat:"ui",title:"Wrong product image",desc:"Product #2 'Smart Watch Pro' shows a backpack emoji."},
-  {id:3,cat:"ui",title:"Price formatting error",desc:"Product #3 'Laptop Backpack' price shows '$49.99.99'."},
-  {id:4,cat:"ui",title:"Lorem ipsum in description",desc:"Product #7 '4K UHD Monitor' description shows placeholder text."},
-  {id:5,cat:"ui",title:"Misaligned button CSS",desc:"Product #10 'External SSD' Add to Cart button on listing card is shifted and overlaps the card edge."},
-  {id:6,cat:"ui",title:"Wrong currency symbol",desc:"Product #9 'Phone Stand' shows € instead of $ but cart adds it in USD."},
-  {id:7,cat:"ui",title:"Impossible rating value",desc:"Product #6 'Wireless Mouse' shows 6.0/5 stars."},
-  {id:8,cat:"func",title:"Out of Stock badge but addable",desc:"Product #8 'Gaming Chair' shows OUT OF STOCK badge but Add to Cart works."},
-  {id:9,cat:"func",title:"Add to Cart adds 2 items",desc:"Product #4 'USB-C Hub' adds 2 items per click (multiplies any selected quantity)."},
-  {id:10,cat:"func",title:"Discount displayed but not applied",desc:"Product #5 'Mechanical Keyboard' shows $90.99 with 30% OFF, but cart and checkout charge full $129.99."},
-  {id:11,cat:"func",title:"Sort: Price Low to High broken",desc:"Selecting 'Price: Low to High' sorts high to low."},
-  {id:12,cat:"func",title:"Sort: Name A to Z does nothing",desc:"Selecting 'Name: A to Z' leaves order unchanged."},
-  {id:13,cat:"func",title:"Cart badge doesn't decrement",desc:"Removing items from cart doesn't decrease the header counter."},
-  {id:14,cat:"func",title:"Search is case-sensitive",desc:"Lowercase queries like 'headphones' return 0 results."},
-  {id:15,cat:"func",title:"Cart persists after logout",desc:"Logging out and back in restores the previous cart."}
+  // ── Listing Page (8 bugs) ──
+  {id:1,cat:"ui",page:"listing",title:"Typo in product name",desc:"Product #1 displays as 'Wireles Bluetoth Headphones' — two characters missing."},
+  {id:2,cat:"ui",page:"listing",title:"Wrong product image",desc:"Product #2 'Smart Watch Pro' shows a backpack emoji instead of a watch."},
+  {id:3,cat:"ui",page:"listing",title:"Price formatting error",desc:"Product #3 'Laptop Backpack' price displays as '$49.99.99' (extra decimal segment)."},
+  {id:4,cat:"ui",page:"listing",title:"Lorem ipsum in description",desc:"Product #7 '4K UHD Monitor' shows Lorem ipsum placeholder text instead of the real description."},
+  {id:5,cat:"ui",page:"listing",title:"Wrong currency symbol",desc:"Product #9 'Phone Stand' shows € (Euro) instead of $ (Dollar)."},
+  {id:6,cat:"ui",page:"listing",title:"Impossible rating value",desc:"Product #6 'Wireless Mouse' shows 6.0 out of 5 stars — above the maximum scale."},
+  {id:7,cat:"func",page:"listing",title:"Out of Stock badge but item still addable",desc:"Product #8 'Gaming Chair' shows OUT OF STOCK badge but clicking Add to Cart still works."},
+  {id:8,cat:"func",page:"listing",title:"Sort: Price Low to High is reversed",desc:"Selecting 'Price: Low to High' actually sorts items from high to low."},
+  // ── Cart Page (5 bugs) ──
+  {id:9,cat:"func",page:"cart",title:"Add to Cart adds 2 items",desc:"Product #4 'USB-C Hub' adds 2 items per single click — cart counter jumps by 2."},
+  {id:10,cat:"func",page:"cart",title:"Discount shown but full price charged",desc:"Product #5 'Mechanical Keyboard' shows 30% OFF ($90.99) on listing but cart charges the full $129.99."},
+  {id:11,cat:"func",page:"cart",title:"Cart badge doesn't decrement on remove",desc:"Removing an item from the cart does not decrease the header cart counter badge."},
+  {id:12,cat:"func",page:"cart",title:"Delete removes the wrong item",desc:"Clicking 'Delete' always removes the first item in the cart, not the one selected."},
+  {id:13,cat:"func",page:"cart",title:"Cart persists after logout",desc:"Logging out and logging back in restores the previous cart contents."},
+  {id:14,cat:"func",page:"listing",title:"Sorting controls partially broken",desc:"On problem_user, most sort options do not apply expected ordering."},
+  {id:15,cat:"func",page:"listing",title:"Click opens wrong detail page",desc:"Clicking a listing item opens a different product detail page."},
+  {id:16,cat:"func",page:"listing",title:"Rating filter returns wrong results",desc:"Selecting 4★ & up returns lower-rated items for problem_user."},
+  {id:17,cat:"func",page:"checkout",title:"ZIP edit crashes checkout",desc:"Editing ZIP in checkout causes a crash panel with optional error details."},
+  {id:18,cat:"func",page:"listing",title:"Result count mismatch",desc:"Result count text does not match number of cards shown."},
+  {id:19,cat:"func",page:"listing",title:"Duplicate product card",desc:"One product appears twice in the grid."},
+  {id:20,cat:"ui",page:"listing",title:"Wrong Best Seller badge",desc:"A non-bestseller item incorrectly shows Best Seller badge."},
+  {id:21,cat:"func",page:"listing",title:"Search highlight mismatch",desc:"Search highlighting appears on unrelated cards."},
+  {id:22,cat:"func",page:"listing",title:"Add to cart adds neighbor item",desc:"Add on one card may add a different adjacent product."},
+  {id:23,cat:"func",page:"listing",title:"Sort state resets silently",desc:"Sort dropdown resets to Featured after search."},
+  {id:24,cat:"func",page:"listing",title:"Price filter off-by-one",desc:"Under $25 includes $25.00-equivalent boundary incorrectly."},
+  {id:25,cat:"func",page:"listing",title:"Stock inconsistency across views",desc:"Listing stock state conflicts with detail stock state for a product."},
 ];
 
 const VALID_USERS={standard_user:"quality_kart",problem_user:"quality_kart",adminUser:"quality_kart"};
@@ -650,6 +662,21 @@ function goHome(){
   renderProducts(products);
 }
 function navPage(page){renderContentPage(page);showView('content-view');setActiveNav('');}
+function handleTopNavCategory(category){
+  showView('listing-view');
+  if(category==='Accessories'){
+    document.getElementById('results-title').textContent='Accessories';
+    renderProducts(products.filter(p=>p.price<100));
+    return;
+  }
+  if(category==='Furniture'){
+    document.getElementById('results-title').textContent='Furniture';
+    renderProducts(products.filter(p=>p.id===8));
+    return;
+  }
+  document.getElementById('results-title').textContent='Electronics & Accessories';
+  renderProducts(products);
+}
 
 // SUBNAV
 function handleNavClick(el){
@@ -928,12 +955,18 @@ function toggleFaq(el){
 function renderProducts(list,filter){
   const grid=document.getElementById('product-grid');
   grid.innerHTML='';
-  document.getElementById('results-count').textContent='1-'+list.length+' of '+list.length+' result'+(list.length===1?'':'s');
+  let renderList=[...list];
+  if(isProblem()&&renderList.length>1){
+    renderList.push(renderList[0]); // Bug 19
+  }
+  const shownCount=(isProblem()&&renderList.length>2)?renderList.length-1:renderList.length;
+  document.getElementById('results-count').textContent='1-'+shownCount+' of '+renderList.length+' result'+(renderList.length===1?'':'s'); // Bug 18
   if(!list.length){
     grid.innerHTML='<div style="grid-column:1/-1;text-align:center;background:white;border-radius:8px;padding:60px 20px"><h3 style="font-size:18px;margin-bottom:8px">No results found</h3><div style="color:#565959">Try a different search term.</div></div>';
     return;
   }
-  list.forEach((p,rank)=>{
+  renderList.forEach((p,rank)=>{
+    if(isProblem()&&rank===renderList.length-1&&renderList.length>2)return; // hide one card for mismatch
     const card=document.createElement('div');
     card.className='product-card';
     const v=getDisplayValues(p);
@@ -941,19 +974,30 @@ function renderProducts(list,filter){
     let extraBadge='';
     if(filter==='bestsellers')extraBadge=`<span class="badge rank">#${rank+1}</span>`;
     if(filter==='new')extraBadge=`<span class="badge new-tag">NEW</span>`;
+    let nameHtml=v.name;
+    const q=document.getElementById('search-input').value.trim();
+    if(q&&isProblem()&&rank%2===0){nameHtml=`<mark>${v.name}</mark>`;} // Bug 21
+    const forcedBadge=isProblem()&&p.id===3?'<span class="badge bestseller">Best Seller</span>':''; // Bug 20
     card.innerHTML=`
-      <div class="badge-row"><span>${v.leftBadge||extraBadge}</span><span>${v.rightBadge}</span></div>
+      <div class="badge-row"><span>${forcedBadge||v.leftBadge||extraBadge}</span><span>${v.rightBadge}</span></div>
       <div class="product-image">${v.emoji}</div>
       <div class="product-brand">${p.brand}</div>
-      <div class="product-name">${v.name}</div>
+      <div class="product-name">${nameHtml}</div>
       <div class="product-rating-row"><span class="stars">${v.stars}</span><span style="font-size:12px;color:#565959">${v.rating.toFixed(1)}</span><span class="reviews">(${p.reviews.toLocaleString()})</span></div>
       <div class="product-price-row"><span class="product-price">${v.priceHtml}</span></div>
       <div class="product-meta">${v.description}</div>
       ${p.freeShip?'<div class="free-ship"><strong>FREE delivery</strong> Tomorrow</div>':'<div class="free-ship" style="color:#565959">Standard shipping</div>'}
-      ${p.stock==='low'?'<span class="stock-status low">Only 3 left in stock</span>':'<span class="stock-status in">In Stock</span>'}
+      ${(isProblem()&&p.id===2)?'<span class="stock-status low">Only 3 left in stock</span>':(p.stock==='low'?'<span class="stock-status low">Only 3 left in stock</span>':'<span class="stock-status in">In Stock</span>')}
       <button class="add-to-cart-btn">Add to Cart</button>`;
-    card.addEventListener('click',()=>showDetail(p.id));
-    card.querySelector('.add-to-cart-btn').addEventListener('click',e=>{e.stopPropagation();addToCart(p.id,e.target,1);});
+    card.addEventListener('click',()=>{
+      if(isProblem())showDetail((p.id%products.length)+1);
+      else showDetail(p.id);
+    });
+    card.querySelector('.add-to-cart-btn').addEventListener('click',e=>{
+      e.stopPropagation();
+      const addId=(isProblem()&&p.id<products.length)?p.id+1:p.id; // Bug 22
+      addToCart(addId,e.target,1);
+    });
     grid.appendChild(card);
   });
 }
@@ -981,6 +1025,30 @@ function getDisplayValues(p){
   return{name,emoji,rating,description,leftBadge,rightBadge,cssBroken,priceHtml,detailPrice,stars};
 }
 
+function filterByRating(min,el){
+  document.querySelectorAll('.sidebar-section .opt.review').forEach(x=>x.classList.remove('active'));
+  if(el)el.classList.add('active');
+  let list=[...products];
+  if(isProblem())list=list.filter(p=>p.rating<min);
+  else list=list.filter(p=>p.rating>=min);
+  document.getElementById('results-title').textContent=`${min} Stars & Up`;
+  document.getElementById('listing-bc').textContent='Customer Reviews';
+  document.getElementById('listing-banner').classList.add('hidden');
+  showView('listing-view');
+  renderProducts(list);
+}
+
+function filterUnder25(){
+  let list=[...products];
+  if(isProblem())list=list.filter(p=>p.price<=25); // Bug 24 off-by-one boundary
+  else list=list.filter(p=>p.price<25);
+  document.getElementById('results-title').textContent='Price: Under $25';
+  document.getElementById('listing-bc').textContent='Price Filter';
+  document.getElementById('listing-banner').classList.add('hidden');
+  showView('listing-view');
+  renderProducts(list);
+}
+
 // DETAIL
 function showDetail(id){
   currentDetailId=id;
@@ -988,7 +1056,7 @@ function showDetail(id){
   const v=getDisplayValues(p);
   document.getElementById('detail-bc-name').textContent=v.name;
   const discountInfo=(isProblem()&&p.id===5)?`<span class="strike">$129.99</span><span class="save">Save 30%</span>`:'';
-  const oosLabel=(isProblem()&&p.id===8)?'<span class="bb-stock oos">Out of Stock</span>':'<span class="bb-stock">In Stock</span>';
+  const oosLabel=(isProblem()&&(p.id===8||p.id===2))?'<span class="bb-stock oos">Out of Stock</span>':'<span class="bb-stock">In Stock</span>'; // Bug 25
   document.getElementById('detail-layout').innerHTML=`
     <div class="detail-img">${v.emoji}</div>
     <div class="detail-info">
@@ -1042,8 +1110,9 @@ function renderCart(){
   document.getElementById('cart-total').textContent=total.toFixed(2);
 }
 function removeFromCart(idx){
-  cart.splice(idx,1);
-  if(!isProblem()){buggyBadge=cart.length;updateCartBadge();}
+  if(isProblem())cart.splice(0,1);   // Bug 12: always removes first item, not selected
+  else cart.splice(idx,1);
+  if(!isProblem()){buggyBadge=cart.length;updateCartBadge();}  // Bug 11: badge stays stale
   renderCart();
 }
 
@@ -1089,6 +1158,30 @@ function renderCheckout(){
         <p class="order-disc">By placing your order you agree to QualityKart's <a>conditions of use</a> and <a>privacy notice</a>. <strong>This is a demo — no real charge is made.</strong></p>
       </div>
     </div>`;
+  bindZipCrashBug();
+}
+
+function bindZipCrashBug(){
+  const zip=document.getElementById('co-zip');
+  if(!zip)return;
+  zip.addEventListener('input',()=>{
+    if(!isProblem())return;
+    const root=document.getElementById('checkout-page');
+    root.innerHTML=`<div style="background:white;border:1px solid #D5D9D9;border-radius:8px;padding:24px">
+      <h2 style="font-size:24px;color:#B12704;margin-bottom:10px">Checkout crashed while validating ZIP code</h2>
+      <p style="font-size:14px;color:#565959;margin-bottom:12px">A runtime exception occurred and checkout cannot continue.</p>
+      <button class="yellow-btn" onclick="toggleZipCrashDetails()" style="margin-bottom:10px">Show details</button>
+      <pre id="zip-crash-details" class="hidden" style="background:#111;color:#f1f1f1;padding:12px;border-radius:6px;overflow:auto;font-size:12px">TypeError: Cannot read properties of undefined (reading 'zipRegex')
+at validateZip (checkout.js:142)
+at onZipInput (checkout.js:186)</pre>
+      <button class="orange-btn" onclick="renderCheckout()">Reload checkout</button>
+    </div>`;
+  },{once:true});
+}
+
+function toggleZipCrashDetails(){
+  const details=document.getElementById('zip-crash-details');
+  if(details)details.classList.toggle('hidden');
 }
 function placeOrder(total){
   const req=['co-name','co-phone','co-addr','co-city','co-state','co-zip','co-cname','co-cnum','co-exp','co-cvv'];
@@ -1134,11 +1227,11 @@ function applyFilters(){
   const sortBy=document.getElementById('sort-select').value;
   let list=[...products];
   if(isProblem()){
-    if(sortBy==='price-asc')list.sort((a,b)=>b.price-a.price);
-    else if(sortBy==='price-desc')list.sort((a,b)=>b.price-a.price);
-    else if(sortBy==='name-asc'){/*no-op*/}
-    else if(sortBy==='name-desc')list.sort((a,b)=>b.name.localeCompare(a.name));
-    else if(sortBy==='rating')list.sort((a,b)=>b.rating-a.rating);
+    if(sortBy==='price-asc')list.sort((a,b)=>b.price-a.price);  // Bug 8: reversed
+    else if(sortBy==='price-desc'){/* no-op bug */}
+    else if(sortBy==='name-asc'){/* no-op bug */}
+    else if(sortBy==='name-desc'){/* no-op bug */}
+    else if(sortBy==='rating'){/* no-op bug */}
   } else {
     if(sortBy==='price-asc')list.sort((a,b)=>a.price-b.price);
     else if(sortBy==='price-desc')list.sort((a,b)=>b.price-a.price);
@@ -1148,10 +1241,10 @@ function applyFilters(){
   }
   const q=document.getElementById('search-input').value;
   if(q.trim()){
-    if(isProblem())list=list.filter(p=>p.name.includes(q));
-    else list=list.filter(p=>p.name.toLowerCase().includes(q.toLowerCase()));
+    list=list.filter(p=>p.name.toLowerCase().includes(q.toLowerCase()));
   }
   document.getElementById('results-title').textContent=q.trim()?`Results for "${q}"`:'Electronics & Accessories';
+  if(isProblem()&&q.trim())document.getElementById('sort-select').value='default'; // Bug 23
   showView('listing-view');
   renderProducts(list);
 }
