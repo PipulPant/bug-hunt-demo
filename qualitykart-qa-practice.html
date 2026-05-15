@@ -1177,31 +1177,11 @@ function renderCheckout(){
         <p class="order-disc">By placing your order you agree to QualityKart's <a>conditions of use</a> and <a>privacy notice</a>. <strong>This is a demo — no real charge is made.</strong></p>
       </div>
     </div>`;
-  bindZipCrashBug();
+  // ZIP stays editable; no forced crash on input
 }
 
-function bindZipCrashBug(){
-  const zip=document.getElementById('co-zip');
-  if(!zip)return;
-  zip.addEventListener('input',()=>{
-    if(!isProblem())return;
-    const root=document.getElementById('checkout-page');
-    root.innerHTML=`<div style="background:white;border:1px solid #D5D9D9;border-radius:8px;padding:24px">
-      <h2 style="font-size:24px;color:#B12704;margin-bottom:10px">Checkout crashed while validating ZIP code</h2>
-      <p style="font-size:14px;color:#565959;margin-bottom:12px">A runtime exception occurred and checkout cannot continue.</p>
-      <button class="yellow-btn" onclick="toggleZipCrashDetails()" style="margin-bottom:10px">Show details</button>
-      <pre id="zip-crash-details" class="hidden" style="background:#111;color:#f1f1f1;padding:12px;border-radius:6px;overflow:auto;font-size:12px">TypeError: Cannot read properties of undefined (reading 'zipRegex')
-at validateZip (checkout.js:142)
-at onZipInput (checkout.js:186)</pre>
-      <button class="orange-btn" onclick="renderCheckout()">Reload checkout</button>
-    </div>`;
-  },{once:true});
-}
-
-function toggleZipCrashDetails(){
-  const details=document.getElementById('zip-crash-details');
-  if(details)details.classList.toggle('hidden');
-}
+function bindZipCrashBug(){}
+function toggleZipCrashDetails(){}
 function sanitizeZipInput(el){
   el.value=el.value.replace(/\D/g,'').slice(0,5);
 }
