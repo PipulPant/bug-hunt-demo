@@ -603,6 +603,13 @@ const bugList=[
 const VALID_USERS={standard_user:"quality_kart",problem_user:"quality_kart",adminUser:"quality_kart"};
 let currentUser=null,cart=[],buggyBadge=0,persistedCart=[],persistedBadge=0,currentDetailId=null;
 
+function getDeliveryLabel(user){
+  if(user==="standard_user")return "San Francisco 94102";
+  if(user==="problem_user")return "Seattle 98101";
+  if(user==="adminUser")return "New York 10001";
+  return "Guest";
+}
+
 // AUTH
 function login(){
   const u=document.getElementById('username').value.trim();
@@ -621,7 +628,7 @@ function enterShop(){
   document.getElementById('login-page').classList.add('hidden');
   document.getElementById('shop-page').classList.remove('hidden');
   document.getElementById('user-name').textContent=currentUser;
-  document.getElementById('user-name-header').textContent=currentUser;
+  document.getElementById('user-name-header').textContent=getDeliveryLabel(currentUser);
   document.getElementById('search-input').value='';
   document.getElementById('sort-select').value='default';
   if(isProblem()&&persistedCart.length>0){cart=[...persistedCart];buggyBadge=persistedBadge;}
@@ -1147,7 +1154,7 @@ function renderCheckout(){
           <div class="form-row"><div><label>Full name *</label><input type="text" id="co-name" value="${currentUser}"/></div><div><label>Phone *</label><input type="tel" id="co-phone" value="+1 555-123-4567"/></div></div>
           <div class="form-row full"><div><label>Address *</label><input type="text" id="co-addr" value="123 Main Street"/></div></div>
           <div class="form-row"><div><label>City *</label><input type="text" id="co-city" value="San Francisco"/></div><div><label>State *</label><input type="text" id="co-state" value="CA"/></div></div>
-          <div class="form-row"><div><label>ZIP *</label><input type="text" id="co-zip" value="94102"/></div><div><label>Country</label><select id="co-country"><option>United States</option><option>Canada</option><option>India</option><option>United Kingdom</option></select></div></div>
+          <div class="form-row"><div><label>ZIP *</label><input type="text" id="co-zip" value="94102" inputmode="numeric" maxlength="5" oninput="sanitizeZipInput(this)"/></div><div><label>Country</label><select id="co-country"><option>United States</option><option>Canada</option><option>India</option><option>United Kingdom</option></select></div></div>
         </div>
         <div class="co-section">
           <h3><span class="step-num">2</span> Payment method</h3>
@@ -1194,6 +1201,9 @@ at onZipInput (checkout.js:186)</pre>
 function toggleZipCrashDetails(){
   const details=document.getElementById('zip-crash-details');
   if(details)details.classList.toggle('hidden');
+}
+function sanitizeZipInput(el){
+  el.value=el.value.replace(/\D/g,'').slice(0,5);
 }
 function placeOrder(total){
   const req=['co-name','co-phone','co-addr','co-city','co-state','co-zip','co-cname','co-cnum','co-exp','co-cvv'];
