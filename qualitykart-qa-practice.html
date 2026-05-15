@@ -550,8 +550,8 @@
   <div class="zip-overlay" id="zip-overlay" onclick="closeZipModal()">
     <div class="zip-modal" onclick="event.stopPropagation()">
       <h3>Update delivery ZIP</h3>
-      <p>Enter a 5-digit ZIP code.</p>
-      <input type="text" id="zip-modal-input" inputmode="numeric" maxlength="5" oninput="sanitizeZipInput(this)" placeholder="94102"/>
+      <p>Enter ZIP code.</p>
+      <input type="text" id="zip-modal-input" maxlength="12" placeholder="94102"/>
       <div class="zip-actions">
         <button class="yellow-btn" onclick="closeZipModal()">Cancel</button>
         <button class="orange-btn" onclick="saveZipFromModal()">Save</button>
@@ -610,7 +610,7 @@ const bugList=[
   {id:14,cat:"func",page:"listing",title:"Sorting controls partially broken",desc:"On problem_user, most sort options do not apply expected ordering."},
   {id:15,cat:"func",page:"listing",title:"Click opens wrong detail page",desc:"Clicking a listing item opens a different product detail page."},
   {id:16,cat:"func",page:"listing",title:"Rating filter returns wrong results",desc:"Selecting 4★ & up returns lower-rated items for problem_user."},
-  {id:17,cat:"func",page:"checkout",title:"ZIP edit crashes checkout",desc:"Editing ZIP in checkout causes a crash panel with optional error details."},
+  {id:17,cat:"func",page:"checkout",title:"ZIP accepts invalid format",desc:"Delivery ZIP modal accepts alphabet/alphanumeric ZIP values and saves them."},
   {id:18,cat:"func",page:"listing",title:"Result count mismatch",desc:"Result count text does not match number of cards shown."},
   {id:19,cat:"func",page:"listing",title:"Duplicate product card",desc:"One product appears twice in the grid."},
   {id:20,cat:"ui",page:"listing",title:"Wrong Best Seller badge",desc:"A non-bestseller item incorrectly shows Best Seller badge."},
@@ -627,9 +627,9 @@ const defaultZips={standard_user:"94102",problem_user:"98101",adminUser:"10001"}
 let userZipMap={...defaultZips};
 
 function getDeliveryLabel(user){
-  if(user==="standard_user")return `San Francisco ${userZipMap.standard_user||"94102"}`;
-  if(user==="problem_user")return `Seattle ${userZipMap.problem_user||"98101"}`;
-  if(user==="adminUser")return `New York ${userZipMap.adminUser||"10001"}`;
+  if(user==="standard_user")return `${userZipMap.standard_user||"94102"}`;
+  if(user==="problem_user")return `${userZipMap.problem_user||"98101"}`;
+  if(user==="adminUser")return `${userZipMap.adminUser||"10001"}`;
   return "Guest";
 }
 
@@ -1219,7 +1219,7 @@ function closeZipModal(){document.getElementById('zip-overlay').classList.remove
 function saveZipFromModal(){
   const input=document.getElementById('zip-modal-input');
   const zip=(input.value||"").trim();
-  if(zip.length!==5){showToast('Please enter a valid 5-digit ZIP.');input.focus();return;}
+  if(!zip){showToast('Please enter ZIP.');input.focus();return;}
   userZipMap[currentUser]=zip;
   document.getElementById('user-name-header').textContent=getDeliveryLabel(currentUser);
   closeZipModal();
