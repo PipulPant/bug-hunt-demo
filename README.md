@@ -2,6 +2,8 @@
 
 QualityKart is a single-file static e-commerce demo used for practice and UI flow walkthroughs.
 
+Live Site: https://pipulpant.github.io/bug-hunt-demo/
+
 ## Project Files
 
 - `qualitykart-qa-practice.html` — complete app (HTML, CSS, JS in one file)
