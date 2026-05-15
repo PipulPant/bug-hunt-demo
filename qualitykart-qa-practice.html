@@ -1211,6 +1211,11 @@ function sanitizeZipInput(el){
 function openZipModal(){
   if(!currentUser)return;
   const input=document.getElementById('zip-modal-input');
+  input.maxLength=(currentUser==="problem_user")?12:5;
+  input.oninput=()=>{
+    if(currentUser==="problem_user")return;
+    input.value=input.value.replace(/\D/g,'').slice(0,5);
+  };
   input.value=userZipMap[currentUser]||defaultZips[currentUser]||"";
   document.getElementById('zip-overlay').classList.add('open');
   setTimeout(()=>input.focus(),50);
@@ -1218,8 +1223,14 @@ function openZipModal(){
 function closeZipModal(){document.getElementById('zip-overlay').classList.remove('open');}
 function saveZipFromModal(){
   const input=document.getElementById('zip-modal-input');
-  const zip=(input.value||"").trim();
-  if(!zip){showToast('Please enter ZIP.');input.focus();return;}
+  let zip=(input.value||"").trim();
+  if(currentUser!=="problem_user"){
+    zip=zip.replace(/\D/g,'').slice(0,5);
+    input.value=zip;
+    if(zip.length!==5){showToast('Please enter a valid 5-digit ZIP.');input.focus();return;}
+  }else{
+    if(!zip){showToast('Please enter ZIP.');input.focus();return;}
+  }
   userZipMap[currentUser]=zip;
   document.getElementById('user-name-header').textContent=getDeliveryLabel(currentUser);
   closeZipModal();
